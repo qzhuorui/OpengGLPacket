@@ -15,5 +15,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_pure_activity.setOnClickListener {
             PureBackgroundActivity.startActivity(this)
         }
+        tv_point_line_triangle_activity.setOnClickListener {
+            PointLineTriangleActivity.startActivity(this)
+        }
     }
 }
