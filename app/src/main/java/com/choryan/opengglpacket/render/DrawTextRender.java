@@ -1,13 +1,10 @@
 package com.choryan.opengglpacket.render;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import com.choryan.opengglpacket.R;
 import com.choryan.opengglpacket.base.BaseApplication;
 import com.choryan.opengglpacket.util.AssetsUtils;
 import com.choryan.opengglpacket.util.GlesUtil;
@@ -58,7 +55,6 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     protected final int VertexCount = vertexData.length / CoordsPerVertexCount;
 
     public DrawTextRender() {
-        Log.d(TAG, "DrawTextRender: ");
         vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
@@ -73,14 +69,12 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     }
 
     public void setRenderBitmap(Bitmap renderBitmap, GLSurfaceRenderCallback callback) {
-        Log.d(TAG, "setRenderBitmap: ");
         mRenderBitmap = renderBitmap;
         callback.onRequestRender();
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        Log.d(TAG, "onSurfaceCreated: ");
         String vertexShaderStr = AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_draw_text_shader");
         String fragmentShaderStr = AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_draw_text_shader");
 
@@ -93,25 +87,23 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        Log.d(TAG, "onSurfaceChanged: ");
         GLES30.glViewport(0, 0, width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
         if (mRenderBitmap == null) {
-            Log.d(TAG, "onDrawFrame: 1");
             GLES30.glClearColor(1.0f, 0.0f, 0.0f, 0.5f);
             GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
             return;
         } else {
-            Log.d(TAG, "onDrawFrame: 2");
             GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
             GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
             mBitmapTextureId = GlesUtil.loadBitmapTexture(mRenderBitmap);
         }
+        GLES30.glViewport(0, 0, mRenderBitmap.getWidth(), mRenderBitmap.getHeight());
+
         GLES30.glUseProgram(mProgram);
-//        GLES30.glViewport(400, 400, mRenderBitmap.getWidth() * 2, mRenderBitmap.getHeight() * 2);
 
         GLES30.glEnableVertexAttribArray(avPosition);
         GLES30.glEnableVertexAttribArray(afPosition);

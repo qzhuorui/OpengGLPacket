@@ -1,5 +1,3 @@
-#version 300 es
-
 attribute vec4 av_Position;
 attribute vec2 af_Position;
 varying vec2 f_texturePos;

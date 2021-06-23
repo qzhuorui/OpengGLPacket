@@ -1,5 +1,3 @@
-#version 300 es
-
 precision mediump float;
 varying vec2 f_texturePos;
 uniform sampler2D textureId;

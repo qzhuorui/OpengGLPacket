@@ -29,12 +29,6 @@ class DrawTextActivity : BaseActivity(R.layout.activity_draw_text) {
         super.onPostCreate(savedInstanceState)
         initRender()
         initClick()
-
-        test()
-    }
-
-    private fun test() {
-
     }
 
     private fun initRender() {
