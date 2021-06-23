@@ -10,7 +10,6 @@ import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
 import com.choryan.opengglpacket.render.DrawTextRender
 import kotlinx.android.synthetic.main.activity_draw_text.*
-import kotlinx.android.synthetic.main.activity_pure_background.v_surface_view
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,7 +39,7 @@ class DrawTextActivity : BaseActivity(R.layout.activity_draw_text) {
         btn_done.setOnClickListener {
             lifecycleScope.launch {
                 val renderBitmap = withContext(Dispatchers.IO) {
-                    val bitmap = Bitmap.createBitmap(et_edit_text.width, et_edit_text.height, Bitmap.Config.RGB_565)
+                    val bitmap = Bitmap.createBitmap(et_edit_text.width, et_edit_text.height, Bitmap.Config.ARGB_8888)
                     val canvas = Canvas(bitmap)
                     et_edit_text.draw(canvas)
                     bitmap
