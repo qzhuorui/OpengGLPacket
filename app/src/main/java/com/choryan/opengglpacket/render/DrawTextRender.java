@@ -3,7 +3,7 @@ package com.choryan.opengglpacket.render;
 import android.graphics.Bitmap;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
+import android.opengl.Matrix;
 
 import com.choryan.opengglpacket.base.BaseApplication;
 import com.choryan.opengglpacket.util.AssetsUtils;
@@ -29,9 +29,13 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer frameBuffer;
 
+    private final float[] transformMatrixArray = new float[16];
+    private final float[] rotateMatrixArray = new float[16];
+    private final float[] orthographicMatrix = new float[16];
     private int mProgram;
     private int avPosition;
     private int afPosition;
+    private int uniformRotateMatrixLocation;
     private int sTexture;
 
     private Bitmap mRenderBitmap;
@@ -66,6 +70,9 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
                 .asFloatBuffer()
                 .put(frameBufferData);
         frameBuffer.position(0);
+
+        Matrix.setIdentityM(rotateMatrixArray, 0);
+        Matrix.setRotateM(rotateMatrixArray, 0, 180, 1, 0, 0);
     }
 
     public void setRenderBitmap(Bitmap renderBitmap, GLSurfaceRenderCallback callback) {
@@ -82,6 +89,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
         avPosition = GLES30.glGetAttribLocation(mProgram, "av_Position");
         afPosition = GLES30.glGetAttribLocation(mProgram, "af_Position");
+        uniformRotateMatrixLocation = GLES30.glGetUniformLocation(mProgram, "rotateMatrix");
         sTexture = GLES30.glGetUniformLocation(mProgram, "textureId");
     }
 
@@ -114,6 +122,8 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mBitmapTextureId);
         GLES30.glUniform1i(sTexture, 0);
+
+        GLES30.glUniformMatrix4fv(uniformRotateMatrixLocation, 1, false, rotateMatrixArray, 0);
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, VertexCount);
 
