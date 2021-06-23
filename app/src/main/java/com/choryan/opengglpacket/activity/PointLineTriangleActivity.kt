@@ -2,12 +2,10 @@ package com.choryan.opengglpacket.activity
 
 import android.content.Context
 import android.content.Intent
-import android.opengl.GLSurfaceView
 import android.os.Bundle
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
 import com.choryan.opengglpacket.render.PointLineTriangleRender
-import com.choryan.opengglpacket.render.PureBackgroundRender
 import kotlinx.android.synthetic.main.activity_pure_background.*
 
 /**
