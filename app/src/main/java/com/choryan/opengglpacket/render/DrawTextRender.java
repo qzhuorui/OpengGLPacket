@@ -112,6 +112,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
         GLES30.glViewport(0, 0, mRenderBitmap.getWidth(), mRenderBitmap.getHeight());
 
         GLES30.glUseProgram(mProgram);
+
         GLES30.glEnable(GLES30.GL_BLEND);
         GLES30.glBlendEquation(GLES30.GL_FUNC_ADD);
         GLES30.glBlendFuncSeparate(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA, GLES30.GL_ONE, GLES30.GL_ONE);
