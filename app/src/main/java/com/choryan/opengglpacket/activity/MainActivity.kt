@@ -18,6 +18,12 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_point_line_triangle_activity.setOnClickListener {
             PointLineTriangleActivity.startActivity(this)
         }
+        tv_draw_rectangle_activity.setOnClickListener {
+            DrawRectangleActivity.startActivity(this)
+        }
+        tv_draw_circle_activity.setOnClickListener {
+            DrawCircleActivity.startActivity(this)
+        }
         tv_draw_text_activity.setOnClickListener {
             DrawTextActivity.startActivity(this)
         }

@@ -167,11 +167,11 @@ public class GlesUtil {
         return textureIds[0];
     }
 
-     /**
-      * @description 创建图片纹理
-      * @date: 2020/9/5 11:01
-      * @author: qzhuorui
-      */
+    /**
+     * @description 创建图片纹理
+     * @date: 2020/9/5 11:01
+     * @author: qzhuorui
+     */
     public static int loadBitmapTexture(Context context, int resourceId) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
         if (bitmap == null) {

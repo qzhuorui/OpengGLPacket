@@ -27,6 +27,8 @@
         <activity
             android:name=".activity.DrawTextActivity"
             android:hardwareAccelerated="true" />
+        <activity android:name=".activity.DrawCircleActivity" />
+        <activity android:name=".activity.DrawRectangleActivity" />
     </application>
 
 </manifest>
