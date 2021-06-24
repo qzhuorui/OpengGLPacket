@@ -36,7 +36,7 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
 
     private int mProgram;
     private int avPosition;
-    private int afPosition;
+    private int afColor;
     private int uMatrixLocation;
 
     private float circularCoords[];
@@ -65,7 +65,7 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
         mProgram = GlesUtil.createProgram(vertexShaderStr, fragmentShaderStr);
 
         avPosition = GLES30.glGetAttribLocation(mProgram, "av_Position");
-        afPosition = GLES30.glGetAttribLocation(mProgram, "af_Position");
+        afColor = GLES30.glGetAttribLocation(mProgram, "af_Color");
         uMatrixLocation = GLES30.glGetUniformLocation(mProgram, "u_Matrix");
     }
 
@@ -90,17 +90,17 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
         GLES30.glUseProgram(mProgram);
 
         GLES30.glEnableVertexAttribArray(avPosition);
-        GLES30.glEnableVertexAttribArray(afPosition);
+        GLES30.glEnableVertexAttribArray(afColor);
 
         GLES30.glVertexAttribPointer(avPosition, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
-        GLES30.glVertexAttribPointer(afPosition, 4, GLES30.GL_FLOAT, false, 0, colorBuffer);
+        GLES30.glVertexAttribPointer(afColor, 4, GLES30.GL_FLOAT, false, 0, colorBuffer);
 
         GLES30.glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, circularCoords.length / 3);
 
         GLES30.glDisableVertexAttribArray(avPosition);
-        GLES30.glDisableVertexAttribArray(afPosition);
+        GLES30.glDisableVertexAttribArray(afColor);
     }
 
     private void createPositions(int radius, int n) {
