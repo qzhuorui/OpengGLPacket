@@ -39,7 +39,9 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     private int sTexture;
 
     private Bitmap mRenderBitmap;
-    private int mBitmapTextureId;
+    private int mBitmapTextureId = -1;
+
+    private boolean needReCreateTextureId;
 
 
     private float vertexData[] = {
@@ -77,6 +79,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
     public void setRenderBitmap(Bitmap renderBitmap, GLSurfaceRenderCallback callback) {
         mRenderBitmap = renderBitmap;
+        needReCreateTextureId = true;
         callback.onRequestRender();
     }
 
@@ -107,7 +110,10 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
         } else {
             GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
             GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
-            mBitmapTextureId = GlesUtil.loadBitmapTexture(mRenderBitmap);
+            if (mBitmapTextureId == -1 || needReCreateTextureId) {
+                needReCreateTextureId = false;
+                mBitmapTextureId = GlesUtil.loadBitmapTexture(mRenderBitmap);
+            }
         }
         GLES30.glViewport(0, 0, mRenderBitmap.getWidth(), mRenderBitmap.getHeight());
 
