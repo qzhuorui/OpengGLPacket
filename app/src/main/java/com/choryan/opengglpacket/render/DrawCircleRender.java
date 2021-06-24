@@ -43,7 +43,7 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
     private float color[];
 
     public DrawCircleRender() {
-        createPositions(1, 60);
+        createPositions(1, 20);
 
         vertexBuffer = ByteBuffer.allocateDirect(circularCoords.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
