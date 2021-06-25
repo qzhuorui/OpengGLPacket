@@ -4,8 +4,8 @@ varying vec2 f_textureSize;
 uniform sampler2D textureId;
 
 float getIsStrokeWithAngel(float angle){
-    float outlineSize = 1.0;// 描边宽度，以像素为单位
-    vec3 outlineColor=vec3(0.0, 0.0, 1.0);// 描边颜色
+    float outlineSize = 1.0;
+    vec3 outlineColor=vec3(0.0, 0.0, 1.0);
 
     float stroke = 0.0;
     float rad = angle * 0.01745329252;// 这个浮点数是 pi / 180，角度转弧度
@@ -30,7 +30,7 @@ void main() {
     vec4 myC = texture2D(textureId, vec2(f_texturePos.x, f_texturePos.y));
     if (myC.rgb == vec3(1.0, 0.0, 0.0)){
         //text部分
-        gl_FragColor=myC;
+        gl_FragColor = myC;
         return;
     }
 
