@@ -29,6 +29,7 @@
             android:hardwareAccelerated="true" />
         <activity android:name=".activity.DrawCircleActivity" />
         <activity android:name=".activity.DrawRectangleActivity" />
+        <activity android:name=".activity.DrawBitmapActivity" />
     </application>
 
 </manifest>

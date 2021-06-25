@@ -27,5 +27,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_draw_text_activity.setOnClickListener {
             DrawTextActivity.startActivity(this)
         }
+        tv_draw_bitmap_activity.setOnClickListener {
+            DrawBitmapActivity.startActivity(this)
+        }
     }
 }
