@@ -30,9 +30,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     private final FloatBuffer frameBuffer;
     private FloatBuffer textureSizeBuffer;
 
-    private final float[] transformMatrixArray = new float[16];
     private final float[] rotateMatrixArray = new float[16];
-    private final float[] orthographicMatrix = new float[16];
     private int mProgram;
     private int avPosition;
     private int afPosition;

@@ -37,15 +37,18 @@ class DrawTextActivity : BaseActivity(R.layout.activity_draw_text) {
 
     private fun initClick() {
         btn_done.setOnClickListener {
-            lifecycleScope.launch {
-                val renderBitmap = withContext(Dispatchers.IO) {
-                    val bitmap = Bitmap.createBitmap(et_edit_text.width, et_edit_text.height, Bitmap.Config.ARGB_8888)
-                    val canvas = Canvas(bitmap)
-                    et_edit_text.draw(canvas)
-                    bitmap
-                }
-                drawTextRender.setRenderBitmap(renderBitmap) {
-                    v_surface_view.requestRender()
+            tv_display_text.text = et_edit_text.editableText.toString()
+            tv_display_text.post {
+                lifecycleScope.launch {
+                    val renderBitmap = withContext(Dispatchers.IO) {
+                        val bitmap = Bitmap.createBitmap(tv_display_text.width, tv_display_text.height, Bitmap.Config.ARGB_8888)
+                        val canvas = Canvas(bitmap)
+                        tv_display_text.draw(canvas)
+                        bitmap
+                    }
+                    drawTextRender.setRenderBitmap(renderBitmap) {
+                        v_surface_view.requestRender()
+                    }
                 }
             }
         }

@@ -11,7 +11,7 @@ float getIsStrokeWithAngel(float angle){
     float rad = angle * 0.01745329252;// 这个浮点数是 pi / 180，角度转弧度
     // 这句比较难懂，outlineSize * cos(rad)可以理解为在x轴上投影，除以textureSize.x是因为texture2D接收的是一个0~1的纹理坐标，而不是像素坐标
     vec4 tmp = texture2D(textureId, vec2(f_texturePos.x + outlineSize * cos(rad) / f_textureSize.x, f_texturePos.y + outlineSize * sin(rad) / f_textureSize.y));
-    if (tmp == vec4(1.0, 0.0, 0.0, 1.0)){
+    if (tmp.rgb == vec3(1.0, 0.0, 0.0)){
         stroke = 1.0;
     }
     return stroke;
@@ -28,7 +28,7 @@ void main() {
     //***************
 
     vec4 myC = texture2D(textureId, vec2(f_texturePos.x, f_texturePos.y));
-    if (myC == vec4(1.0, 0.0, 0.0, 1.0)){
+    if (myC.rgb == vec3(1.0, 0.0, 0.0)){
         //text部分
         gl_FragColor=myC;
         return;
