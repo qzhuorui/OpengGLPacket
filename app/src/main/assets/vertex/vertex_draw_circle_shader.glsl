@@ -18,7 +18,15 @@ void main() {
 
     float distance = sqrt(pow(v_texturePos.x, 2.0) + pow(v_texturePos.y, 2.0));
 
-    if (distance <= 0.5){
+    //    float tmp = smoothstep(0.5, 1.0, distance);
+    //
+    //    if (0.0<tmp&&tmp<1.0){
+    //        f_textureColor = vec4(1.0, 1.0, 1.0, 1.0);
+    //    } else {
+    //        f_textureColor = af_Color;
+    //    }
+
+    if (distance >= 0.5){
         f_textureColor = vec4(1.0, 1.0, 1.0, 1.0);
     } else {
         f_textureColor = af_Color;

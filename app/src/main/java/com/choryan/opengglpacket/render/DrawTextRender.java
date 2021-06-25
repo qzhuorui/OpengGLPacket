@@ -28,6 +28,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     private final int CoordsPerVertexCount = 2;
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer frameBuffer;
+    private FloatBuffer textureSizeBuffer;
 
     private final float[] transformMatrixArray = new float[16];
     private final float[] rotateMatrixArray = new float[16];
@@ -35,6 +36,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     private int mProgram;
     private int avPosition;
     private int afPosition;
+    private int afTextureSize;
     private int uniformRotateMatrixLocation;
     private int sTexture;
 
@@ -56,6 +58,10 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
             1f, 0f,
             0f, 1f,
             1f, 1f
+    };
+
+    private float textureSizeBufferData[] = {
+            0f, 0f
     };
 
     protected final int VertexCount = vertexData.length / CoordsPerVertexCount;
@@ -80,6 +86,16 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
     public void setRenderBitmap(Bitmap renderBitmap, GLSurfaceRenderCallback callback) {
         mRenderBitmap = renderBitmap;
         needReCreateTextureId = true;
+
+        textureSizeBufferData[0] = renderBitmap.getWidth();
+        textureSizeBufferData[1] = renderBitmap.getHeight();
+        //传递纹理size
+        textureSizeBuffer = ByteBuffer.allocateDirect(textureSizeBufferData.length * BYTES_PER_FLOAT)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(textureSizeBufferData);
+        textureSizeBuffer.position(0);
+
         callback.onRequestRender();
     }
 
@@ -92,6 +108,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
         avPosition = GLES30.glGetAttribLocation(mProgram, "av_Position");
         afPosition = GLES30.glGetAttribLocation(mProgram, "af_Position");
+        afTextureSize = GLES30.glGetAttribLocation(mProgram, "af_textSize");
         uniformRotateMatrixLocation = GLES30.glGetUniformLocation(mProgram, "rotateMatrix");
         sTexture = GLES30.glGetUniformLocation(mProgram, "textureId");
     }
@@ -125,9 +142,11 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
         GLES30.glEnableVertexAttribArray(avPosition);
         GLES30.glEnableVertexAttribArray(afPosition);
+        GLES30.glEnableVertexAttribArray(afTextureSize);
 
         GLES30.glVertexAttribPointer(avPosition, CoordsPerVertexCount, GLES30.GL_FLOAT, false, 0, vertexBuffer);
         GLES30.glVertexAttribPointer(afPosition, CoordsPerVertexCount, GLES30.GL_FLOAT, false, 0, frameBuffer);
+        GLES30.glVertexAttribPointer(afTextureSize, CoordsPerVertexCount, GLES30.GL_FLOAT, false, 0, textureSizeBuffer);
 
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mBitmapTextureId);
@@ -140,6 +159,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         GLES30.glDisableVertexAttribArray(avPosition);
         GLES30.glDisableVertexAttribArray(afPosition);
+        GLES30.glDisableVertexAttribArray(afTextureSize);
         GLES30.glDisable(GLES30.GL_BLEND);
     }
 
