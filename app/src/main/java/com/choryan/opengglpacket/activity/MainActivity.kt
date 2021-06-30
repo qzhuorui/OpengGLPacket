@@ -24,6 +24,9 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_draw_circle_activity.setOnClickListener {
             DrawCircleActivity.startActivity(this)
         }
+        tv_draw_circular_cone_activity.setOnClickListener {
+            DrawCircularConeActivity.startActivity(this)
+        }
         tv_draw_text_activity.setOnClickListener {
             DrawTextActivity.startActivity(this)
         }

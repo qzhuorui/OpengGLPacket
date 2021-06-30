@@ -20,11 +20,12 @@ import javax.microedition.khronos.opengles.GL10;
  * @author: ChoRyan Quan
  * @date: 2021/6/23
  */
-public class DrawCircleRender implements GLSurfaceView.Renderer {
+public class DrawCircularConeRender implements GLSurfaceView.Renderer {
 
     private final int BYTES_PER_FLOAT = 4;
 
     private final FloatBuffer vertexBuffer;
+    private final FloatBuffer vertexBuffer1;
     private final FloatBuffer colorBuffer;
 
     //相机矩阵
@@ -40,16 +41,26 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
     private int uMatrixLocation;
 
     private float circularCoords[];
+    //圆锥顶点位置（圆底面）
+    private float coneCoords1[];
     private float color[];
 
-    public DrawCircleRender() {
-        createPositions(1, 80);
+    public DrawCircularConeRender() {
+        createPositions(0.5f, 60);
+        //圆锥的圆形底面数据
+        createCircularPositions();
 
         vertexBuffer = ByteBuffer.allocateDirect(circularCoords.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
                 .put(circularCoords);
         vertexBuffer.position(0);
+
+        vertexBuffer1 = ByteBuffer.allocateDirect(coneCoords1.length * BYTES_PER_FLOAT)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(coneCoords1);
+        vertexBuffer1.position(0);
 
         colorBuffer = ByteBuffer.allocateDirect(color.length * BYTES_PER_FLOAT)
                 .order(ByteOrder.nativeOrder())
@@ -60,8 +71,8 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        String vertexShaderStr = AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_draw_circle_shader");
-        String fragmentShaderStr = AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_draw_circle_shader");
+        String vertexShaderStr = AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_draw_circular_cone_shader");
+        String fragmentShaderStr = AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_draw_circular_cone_shader");
         mProgram = GlesUtil.createProgram(vertexShaderStr, fragmentShaderStr);
 
         avPosition = GLES30.glGetAttribLocation(mProgram, "av_Position");
@@ -78,8 +89,15 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
 //        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 7.0f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 //        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
 
-        float aspectRatio = (float) height / (float) width;
-        Matrix.orthoM(mMVPMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+        //计算宽高比
+        float ratio = (float) width / height;
+        //设置透视投影
+        Matrix.frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+        //设置相机位置
+        Matrix.setLookAtM(mViewMatrix, 0, 6, 0, -1f, 0f, 0f, 0f, 0f, 0.0f, 1.0f);
+        //计算变换矩阵
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
+
     }
 
     @Override
@@ -99,15 +117,18 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, circularCoords.length / 3);
 
+        GLES30.glVertexAttribPointer(avPosition, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer1);
+        GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, coneCoords1.length / 3);
+
         GLES30.glDisableVertexAttribArray(avPosition);
         GLES30.glDisableVertexAttribArray(afColor);
     }
 
-    private void createPositions(int radius, int n) {
+    private void createPositions(float radius, int n) {
         ArrayList<Float> data = new ArrayList<>();
-        data.add(0.0f);             //设置圆心坐标
+        data.add(0.0f);             //设置圆锥顶点坐标
         data.add(0.0f);
-        data.add(0.0f);
+        data.add(-0.5f);
         float angDegSpan = 360f / n;
         for (float i = 0; i < 360 + angDegSpan; i += angDegSpan) {
             data.add((float) (radius * Math.sin(i * Math.PI / 180f)));
@@ -125,16 +146,38 @@ public class DrawCircleRender implements GLSurfaceView.Renderer {
         color = new float[f.length * 4 / 3];
         ArrayList<Float> tempC = new ArrayList<>();
         ArrayList<Float> totalC = new ArrayList<>();
+        ArrayList<Float> total0 = new ArrayList<>();
+        total0.add(0.5f);
+        total0.add(0.0f);
+        total0.add(0.0f);
+        total0.add(1.0f);
         tempC.add(1.0f);
-        tempC.add(0.0f);
-        tempC.add(0.0f);
+        tempC.add(1.0f);
+        tempC.add(1.0f);
         tempC.add(1.0f);
         for (int i = 0; i < f.length / 3; i++) {
-            totalC.addAll(tempC);
+            if (i == 0) {
+                totalC.addAll(total0);
+            } else {
+                totalC.addAll(tempC);
+            }
+
         }
 
         for (int i = 0; i < totalC.size(); i++) {
             color[i] = totalC.get(i);
+        }
+    }
+
+    private void createCircularPositions() {
+        coneCoords1 = new float[circularCoords.length];
+
+        for (int i = 0; i < circularCoords.length; i++) {
+            if (i == 2) {
+                coneCoords1[i] = 0.0f;
+            } else {
+                coneCoords1[i] = circularCoords[i];
+            }
         }
     }
 }

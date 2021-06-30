@@ -30,6 +30,7 @@
         <activity android:name=".activity.DrawCircleActivity" />
         <activity android:name=".activity.DrawRectangleActivity" />
         <activity android:name=".activity.DrawBitmapActivity" />
+        <activity android:name=".activity.DrawCircularConeActivity" />
     </application>
 
 </manifest>

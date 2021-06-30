@@ -100,6 +100,8 @@ public class DrawRectangleRender implements GLSurfaceView.Renderer {
 //
         float aspectRatio = (float) height / (float) width;
         Matrix.orthoM(mMVPMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+
+//        Matrix.setIdentityM(mMVPMatrix, 0);
     }
 
     @Override
