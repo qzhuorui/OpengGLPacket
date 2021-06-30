@@ -3,6 +3,7 @@ package com.choryan.opengglpacket.render;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 
 import com.choryan.opengglpacket.base.BaseApplication;
 import com.choryan.opengglpacket.util.AssetsUtils;
@@ -31,6 +32,17 @@ public class PointLineTriangleRender implements GLSurfaceView.Renderer {
     private final FloatBuffer colorBuffer;
     //渲染程序
     private int mProgram;
+
+    //相机
+    private final float[] mViewMatrix = new float[16];
+    //投影
+    private final float[] mProjectMatrix = new float[16];
+    private final float[] mMVPMatrix = new float[16];
+
+    private int uMatrixLocation;
+    private int aPositionLocation;
+    private int aColorLocation;
+
 
     //三个顶点的位置参数
     private float triangleCoords[] = {
@@ -62,15 +74,23 @@ public class PointLineTriangleRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        String vertextShaderStr = AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_point_line_triangle_shader");
+        String vertexShaderStr = AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_point_line_triangle_shader");
         String fragmentShaderStr = AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_point_line_triangle_shader");
 
-        mProgram = GlesUtil.createProgram(vertextShaderStr, fragmentShaderStr);
+        mProgram = GlesUtil.createProgram(vertexShaderStr, fragmentShaderStr);
+
+        uMatrixLocation = GLES30.glGetUniformLocation(mProgram, "u_Matrix");
+        aPositionLocation = GLES30.glGetAttribLocation(mProgram, "vPosition");
+        aColorLocation = GLES30.glGetAttribLocation(mProgram, "aColor");
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES30.glViewport(0, 0, width, height);
+        float ratio = (float) width / height;
+        Matrix.frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 7.0f, 0f, 0f, 0f, 0f, 1.0f, 1.0f);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
     }
 
     @Override
@@ -79,10 +99,12 @@ public class PointLineTriangleRender implements GLSurfaceView.Renderer {
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
         GLES30.glUseProgram(mProgram);
 
-        GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
+        GLES30.glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);
+
+        GLES30.glVertexAttribPointer(aPositionLocation, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
         GLES30.glEnableVertexAttribArray(0);
 
-        GLES30.glVertexAttribPointer(1, 4, GLES30.GL_FLOAT, false, 0, colorBuffer);
+        GLES30.glVertexAttribPointer(aColorLocation, 4, GLES30.GL_FLOAT, false, 0, colorBuffer);
         GLES30.glEnableVertexAttribArray(1);
 
         GLES30.glDrawArrays(GLES30.GL_POINTS, 0, POSITION_COMPONENT_COUNT);
