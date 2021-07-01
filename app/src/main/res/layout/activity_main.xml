@@ -90,5 +90,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_activity" />
 
+    <TextView
+        android:id="@+id/tv_draw_bitmap_sobel_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_home_tv"
+        android:padding="5dp"
+        android:text="Draw Bitmap Sobel"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_activity" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
