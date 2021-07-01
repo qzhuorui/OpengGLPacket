@@ -41,10 +41,10 @@ public class DrawRectangleRender implements GLSurfaceView.Renderer {
     private int uMatrixLocation;
 
     private float vertexData[] = {
-            -0.5f, 0.5f, 0.0f,//top left
-            -0.5f, -0.5f, 0.0f, // bottom left
-            0.5f, -0.5f, 0.0f, // bottom right
-            0.5f, 0.5f, 0.0f // top right
+            -0.5f, 0.5f,//top left
+            -0.5f, -0.5f, // bottom left
+            0.5f, -0.5f, // bottom right
+            0.5f, 0.5f // top right
     };
 
     private float colorData[] = {
@@ -93,13 +93,13 @@ public class DrawRectangleRender implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         GLES30.glViewport(0, 0, width, height);
 
-//        float ratio = (float) width / height;
-//        Matrix.frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
-//        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 7.0f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-//        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
+        float ratio = (float) width / height;
+        Matrix.frustumM(mProjectMatrix, 0, -ratio, ratio, -1, 1, 1, 3);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 2f, 0f, 0f, 0f, 1f, 1.0f, 0.0f);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectMatrix, 0, mViewMatrix, 0);
 //
-        float aspectRatio = (float) height / (float) width;
-        Matrix.orthoM(mMVPMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+//        float aspectRatio = (float) height / (float) width;
+//        Matrix.orthoM(mMVPMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
 
 //        Matrix.setIdentityM(mMVPMatrix, 0);
     }
@@ -114,7 +114,7 @@ public class DrawRectangleRender implements GLSurfaceView.Renderer {
         GLES30.glEnableVertexAttribArray(avPosition);
         GLES30.glEnableVertexAttribArray(afPosition);
 
-        GLES30.glVertexAttribPointer(avPosition, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
+        GLES30.glVertexAttribPointer(avPosition, 2, GLES30.GL_FLOAT, false, 0, vertexBuffer);
         GLES30.glVertexAttribPointer(afPosition, 4, GLES30.GL_FLOAT, false, 0, colorBuffer);
 
         GLES30.glUniformMatrix4fv(uMatrixLocation, 1, false, mMVPMatrix, 0);

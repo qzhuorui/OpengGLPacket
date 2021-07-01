@@ -134,9 +134,9 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
 
         GLES30.glUseProgram(mProgram);
 
-        GLES30.glEnable(GLES30.GL_BLEND);
-        GLES30.glBlendEquation(GLES30.GL_FUNC_ADD);
-        GLES30.glBlendFuncSeparate(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA, GLES30.GL_ONE, GLES30.GL_ONE);
+//        GLES30.glEnable(GLES30.GL_BLEND);
+//        GLES30.glBlendEquation(GLES30.GL_FUNC_ADD);
+//        GLES30.glBlendFuncSeparate(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA, GLES30.GL_ONE, GLES30.GL_ONE);
 
         GLES30.glEnableVertexAttribArray(avPosition);
         GLES30.glEnableVertexAttribArray(afPosition);
@@ -158,7 +158,7 @@ public class DrawTextRender implements GLSurfaceView.Renderer {
         GLES30.glDisableVertexAttribArray(avPosition);
         GLES30.glDisableVertexAttribArray(afPosition);
         GLES30.glDisableVertexAttribArray(afTextureSize);
-        GLES30.glDisable(GLES30.GL_BLEND);
+//        GLES30.glDisable(GLES30.GL_BLEND);
     }
 
     public interface GLSurfaceRenderCallback {
