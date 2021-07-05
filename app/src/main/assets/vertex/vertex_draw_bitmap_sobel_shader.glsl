@@ -14,6 +14,6 @@ varying vec3 Position;
 void main() {
     f_texturePos = af_Position;
     Position = vec3(ModelViewMatrix * av_Position);
-    gl_Position = MVP * av_Position;
+    gl_Position =  av_Position;
     f_textureSize = af_textSize;
 }
