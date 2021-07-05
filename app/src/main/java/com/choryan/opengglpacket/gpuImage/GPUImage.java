@@ -1,6 +1,7 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 
 /**
@@ -22,7 +23,13 @@ public class GPUImage {
     }
 
     private void setGLSurfaceView(final GLSurfaceView view) {
-
+        glSurfaceView = view;
+        glSurfaceView.setEGLContextClientVersion(2);
+        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        glSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
+        glSurfaceView.setRenderer(renderer);
+        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        glSurfaceView.requestRender();
     }
 
 }
