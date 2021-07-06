@@ -30,8 +30,9 @@ public class GPUImageView extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        gpuImage = new GPUImage(context);
         surfaceView = new GLSurfaceView(context, attrs);
+
+        gpuImage = new GPUImage(context);
         gpuImage.setGLSurfaceView(surfaceView);
         addView(surfaceView);
     }
@@ -42,12 +43,12 @@ public class GPUImageView extends FrameLayout {
 
     public void setFilter(GPUImageFilter filter) {
         this.filter = filter;
-        gpuImage.setFilter(filter);
+        gpuImage.setFilter(filter);//render set filter
         requestRender();
     }
 
     public void requestRender() {
-        surfaceView.requestRender();
+        surfaceView.requestRender();//走render的draw
     }
 
 }
