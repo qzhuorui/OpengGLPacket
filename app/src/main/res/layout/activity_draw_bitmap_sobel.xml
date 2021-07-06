@@ -5,23 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/red">
 
-    <com.choryan.opengglpacket.gpuImage.GPUImageView
-        android:id="@+id/v_gpuimage_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btn_render"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:text="Render"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/v_gpuimage_view"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/v_gpuimage_view" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.choryan.opengglpacket.gpuImage.GPUImageView
+        android:id="@+id/v_gpuimage_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_render" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
