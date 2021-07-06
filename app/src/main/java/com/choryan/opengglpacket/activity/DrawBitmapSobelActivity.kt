@@ -33,6 +33,9 @@ class DrawBitmapSobelActivity : BaseActivity(R.layout.activity_draw_bitmap_sobel
             curFilter.setLineSize(4.0f)
             v_gpuimage_view.setFilter(curFilter)
         }
+        btn_remove_render.setOnClickListener {
+            v_gpuimage_view.removeAllFilter()
+        }
     }
 
     companion object {

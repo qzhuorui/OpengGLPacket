@@ -3,6 +3,7 @@ package com.choryan.opengglpacket.gpuImage;
 import android.graphics.PointF;
 import android.opengl.GLES20;
 
+import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.OpenGlUtils;
 
 import java.nio.FloatBuffer;
@@ -51,19 +52,25 @@ public class GPUImageFilter {
 
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
+        LogUtil.print("GPUImageFilter");
     }
 
     public GPUImageFilter(String vertexShader, String fragmentShader) {
         runOnDraw = new LinkedList<>();
         this.vertexShader = vertexShader;
         this.fragmentShader = fragmentShader;
+        LogUtil.print("GPUImageFilter2");
     }
 
     public void ifNeedInit() {
-        if (!isInitialized) init();
+        if (!isInitialized) {
+            LogUtil.print("GPUImageFilter-ifNeedInit");
+            init();
+        }
     }
 
     private void init() {
+        LogUtil.print("GPUImageFilter-init");
         onInit();
         onInitialized();
     }
@@ -74,6 +81,7 @@ public class GPUImageFilter {
         glUniformTexture = GLES20.glGetUniformLocation(glProgId, "inputImageTexture");
         glAttribTextureCoordinate = GLES20.glGetAttribLocation(glProgId, "inputTextureCoordinate");
         isInitialized = true;
+        LogUtil.print("GPUImageFilter-onInit");
     }
 
     public void onInitialized() {
@@ -91,10 +99,12 @@ public class GPUImageFilter {
     public void onOutputSizeChanged(final int width, final int height) {
         outputWidth = width;
         outputHeight = height;
+        LogUtil.print("GPUImageFilter-onOutputSizeChanged");
     }
 
     public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
                        final FloatBuffer textureBuffer) {
+
         GLES20.glUseProgram(glProgId);
         runPendingOnDrawTasks();
         if (!isInitialized) {
@@ -119,6 +129,7 @@ public class GPUImageFilter {
         GLES20.glDisableVertexAttribArray(glAttribPosition);
         GLES20.glDisableVertexAttribArray(glAttribTextureCoordinate);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        LogUtil.print("GPUImageFilter-onDraw");
     }
 
     protected void runPendingOnDrawTasks() {

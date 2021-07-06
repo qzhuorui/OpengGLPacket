@@ -2,6 +2,7 @@ package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
 
+import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.Rotation;
 import com.choryan.opengglpacket.util.TextureRotationUtil;
 
@@ -33,6 +34,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     public GPUImageFilterGroup() {
         this(null);
+        LogUtil.print("GPUImageFilterGroup");
     }
 
     public GPUImageFilterGroup(List<GPUImageFilter> filters) {
@@ -58,6 +60,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer();
         glTextureFlipBuffer.put(flipTexture).position(0);
+        LogUtil.print("GPUImageFilterGroup2");
     }
 
     public void addFilter(GPUImageFilter aFilter) {
@@ -71,6 +74,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
+        LogUtil.print("GPUImageFilterGroup-onInit");
         for (GPUImageFilter filter : filters) {
             filter.ifNeedInit();
         }
@@ -99,6 +103,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     @Override
     public void onOutputSizeChanged(int width, int height) {
         super.onOutputSizeChanged(width, height);
+        LogUtil.print("GPUImageFilterGroup-onOutputSizeChanged");
         if (frameBuffers != null) {
             destroyFramebuffers();
         }
@@ -136,6 +141,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     @Override
     public void onDraw(int textureId, FloatBuffer cubeBuffer, FloatBuffer textureBuffer) {
+        LogUtil.print("GPUImageFilterGroup-onDraw");
         runPendingOnDrawTasks();
         if (!isInitialized() || frameBuffers == null || frameBufferTextures == null) {
             return;

@@ -65,4 +65,9 @@ public class GPUImage {
         requestRender();
     }
 
+    public void removeALlFilter(){
+        renderer.removeAllFilter();
+        requestRender();
+    }
+
 }

@@ -40,5 +40,9 @@ public class GPUImageView extends FrameLayout {
         gpuImage.setFilter(filter);
     }
 
+    public void removeAllFilter() {
+        gpuImage.removeALlFilter();
+    }
+
 
 }

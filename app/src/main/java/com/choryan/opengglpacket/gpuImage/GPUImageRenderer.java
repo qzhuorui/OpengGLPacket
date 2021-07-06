@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.OpenGlUtils;
 import com.choryan.opengglpacket.util.Rotation;
 import com.choryan.opengglpacket.util.TextureRotationUtil;
@@ -12,7 +13,9 @@ import com.choryan.opengglpacket.util.TextureRotationUtil;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -39,6 +42,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     private int glTextureId = NO_IMAGE;
     private GPUImageFilter curFilter;
+    private GPUImageFilter lastFilter;
 
     private final Queue<Runnable> runOnDraw;
     private final Queue<Runnable> runOnDrawEnd;
@@ -69,6 +73,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                 .asFloatBuffer()
                 .put(TEXTURE_NO_ROTATION);
         glTextureBuffer.position(0);
+        LogUtil.print("GPUImageRenderer");
     }
 
     @Override
@@ -76,6 +81,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
+        LogUtil.print("GPUImageRenderer-onSurfaceCreated");
     }
 
     @Override
@@ -85,6 +91,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
         GLES20.glUseProgram(curFilter.getProgram());
         curFilter.onOutputSizeChanged(width, height);
+        LogUtil.print("GPUImageRenderer-onSurfaceChanged");
     }
 
     @Override
@@ -93,6 +100,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         runAll(runOnDraw);
         curFilter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
         runAll(runOnDrawEnd);
+        LogUtil.print("GPUImageRenderer-onDrawFrame");
     }
 
     private void runAll(Queue<Runnable> queue) {
@@ -117,6 +125,10 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                 curFilter.onOutputSizeChanged(outputWidth, outputHeight);
             }
         });
+    }
+
+    public void removeAllFilter() {
+        curFilter.destroy();
     }
 
     public void setImageBitmap(final Bitmap bitmap, final boolean recycle) {
