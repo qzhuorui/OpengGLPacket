@@ -3,6 +3,7 @@ package com.choryan.opengglpacket.gpuImage;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 
@@ -17,6 +18,7 @@ public class GPUImage {
     private final Context context;
     private GLSurfaceView glSurfaceView;
 
+    private Bitmap currentBitmap;
     private GPUImageFilter filter;
     private final GPUImageRenderer renderer;
 
@@ -40,7 +42,7 @@ public class GPUImage {
         return configurationInfo.reqGlEsVersion >= 0x20000;
     }
 
-    private void setGLSurfaceView(final GLSurfaceView view) {
+    public void setGLSurfaceView(final GLSurfaceView view) {
         glSurfaceView = view;
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -59,6 +61,12 @@ public class GPUImage {
     public void setFilter(final GPUImageFilter filter) {
         this.filter = filter;
         renderer.setFilter(this.filter);
+        requestRender();
+    }
+
+    public void setImage(final Bitmap bitmap) {
+        currentBitmap = bitmap;
+        renderer.setImageBitmap(bitmap, false);
         requestRender();
     }
 

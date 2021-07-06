@@ -1,8 +1,11 @@
 package com.choryan.opengglpacket.gpuImage;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import com.choryan.opengglpacket.util.OpenGlUtils;
 import com.choryan.opengglpacket.util.Rotation;
 import com.choryan.opengglpacket.util.TextureRotationUtil;
 
@@ -177,6 +180,36 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                 GPUImageRenderer.this.filter.ifNeedInit();
                 GLES20.glUseProgram(GPUImageRenderer.this.filter.getProgram());
                 GPUImageRenderer.this.filter.onOutputSizeChanged(outputWidth, outputHeight);
+            }
+        });
+    }
+
+    public void setImageBitmap(final Bitmap bitmap, final boolean recycle) {
+        if (bitmap == null) {
+            return;
+        }
+
+        runOnDraw(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap resizedBitmap = null;
+                if (bitmap.getWidth() % 2 == 1) {
+                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth() + 1, bitmap.getHeight(),
+                            Bitmap.Config.ARGB_8888);
+                    resizedBitmap.setDensity(bitmap.getDensity());
+                    Canvas can = new Canvas(resizedBitmap);
+                    can.drawARGB(0x00, 0x00, 0x00, 0x00);
+                    can.drawBitmap(bitmap, 0, 0, null);
+                }
+
+                glTextureId = OpenGlUtils.loadTexture(
+                        resizedBitmap != null ? resizedBitmap : bitmap, glTextureId, recycle);
+                if (resizedBitmap != null) {
+                    resizedBitmap.recycle();
+                }
+                imageWidth = bitmap.getWidth();
+                imageHeight = bitmap.getHeight();
+                adjustImageScaling();
             }
         });
     }
