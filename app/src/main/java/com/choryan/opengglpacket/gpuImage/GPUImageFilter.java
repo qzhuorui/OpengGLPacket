@@ -59,6 +59,10 @@ public class GPUImageFilter {
         this.fragmentShader = fragmentShader;
     }
 
+    public void ifNeedInit() {
+        if (!isInitialized) init();
+    }
+
     private void init() {
         onInit();
         onInitialized();
@@ -73,10 +77,6 @@ public class GPUImageFilter {
     }
 
     public void onInitialized() {
-    }
-
-    public void ifNeedInit() {
-        if (!isInitialized) init();
     }
 
     public final void destroy() {
@@ -229,7 +229,6 @@ public class GPUImageFilter {
 
     protected void setUniformMatrix3f(final int location, final float[] matrix) {
         runOnDraw(new Runnable() {
-
             @Override
             public void run() {
                 ifNeedInit();
@@ -240,7 +239,6 @@ public class GPUImageFilter {
 
     protected void setUniformMatrix4f(final int location, final float[] matrix) {
         runOnDraw(new Runnable() {
-
             @Override
             public void run() {
                 ifNeedInit();

@@ -13,16 +13,12 @@ import android.opengl.GLSurfaceView;
  */
 public class GPUImage {
 
-    public enum ScaleType {CENTER_INSIDE, CENTER_CROP}
 
     private final Context context;
-    private GLSurfaceView glSurfaceView;
 
-    private Bitmap currentBitmap;
     private GPUImageFilter filter;
-    private final GPUImageRenderer renderer;
-
-    private ScaleType scaleType = ScaleType.CENTER_CROP;
+    private GPUImageRenderer renderer;
+    private GLSurfaceView glSurfaceView;
 
 
     public GPUImage(final Context context) {
@@ -65,7 +61,6 @@ public class GPUImage {
     }
 
     public void setImage(final Bitmap bitmap) {
-        currentBitmap = bitmap;
         renderer.setImageBitmap(bitmap, false);
         requestRender();
     }

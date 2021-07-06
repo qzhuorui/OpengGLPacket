@@ -43,12 +43,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     private final Queue<Runnable> runOnDraw;
     private final Queue<Runnable> runOnDrawEnd;
 
-    private Rotation rotation;
-    private boolean flipHorizontal;
-    private boolean flipVertical;
-    private GPUImage.ScaleType scaleType = GPUImage.ScaleType.CENTER_CROP;
-
-
     private int outputWidth;
     private int outputHeight;
 
@@ -72,8 +66,9 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
         glTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
                 .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        setRotation(Rotation.NORMAL, false, false);
+                .asFloatBuffer()
+                .put(TEXTURE_NO_ROTATION);
+        glTextureBuffer.position(0);
     }
 
     @Override
@@ -90,7 +85,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
         GLES20.glUseProgram(filter.getProgram());
         filter.onOutputSizeChanged(width, height);
-        adjustImageScaling();
     }
 
     @Override
@@ -99,65 +93,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         runAll(runOnDraw);
         filter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
         runAll(runOnDrawEnd);
-    }
-
-    public void setRotation(final Rotation rotation,
-                            final boolean flipHorizontal, final boolean flipVertical) {
-        this.flipHorizontal = flipHorizontal;
-        this.flipVertical = flipVertical;
-        setRotation(rotation);
-    }
-
-    public void setRotation(final Rotation rotation) {
-        this.rotation = rotation;
-        adjustImageScaling();
-    }
-
-    private void adjustImageScaling() {
-        float outputWidth = this.outputWidth;
-        float outputHeight = this.outputHeight;
-        if (rotation == Rotation.ROTATION_270 || rotation == Rotation.ROTATION_90) {
-            outputWidth = this.outputHeight;
-            outputHeight = this.outputWidth;
-        }
-
-        float ratio1 = outputWidth / imageWidth;
-        float ratio2 = outputHeight / imageHeight;
-        float ratioMax = Math.max(ratio1, ratio2);
-        int imageWidthNew = Math.round(imageWidth * ratioMax);
-        int imageHeightNew = Math.round(imageHeight * ratioMax);
-
-        float ratioWidth = imageWidthNew / outputWidth;
-        float ratioHeight = imageHeightNew / outputHeight;
-
-        float[] cube = CUBE;
-        float[] textureCords = TextureRotationUtil.getRotation(rotation, flipHorizontal, flipVertical);
-        if (scaleType == GPUImage.ScaleType.CENTER_CROP) {
-            float distHorizontal = (1 - 1 / ratioWidth) / 2;
-            float distVertical = (1 - 1 / ratioHeight) / 2;
-            textureCords = new float[]{
-                    addDistance(textureCords[0], distHorizontal), addDistance(textureCords[1], distVertical),
-                    addDistance(textureCords[2], distHorizontal), addDistance(textureCords[3], distVertical),
-                    addDistance(textureCords[4], distHorizontal), addDistance(textureCords[5], distVertical),
-                    addDistance(textureCords[6], distHorizontal), addDistance(textureCords[7], distVertical),
-            };
-        } else {
-            cube = new float[]{
-                    CUBE[0] / ratioHeight, CUBE[1] / ratioWidth,
-                    CUBE[2] / ratioHeight, CUBE[3] / ratioWidth,
-                    CUBE[4] / ratioHeight, CUBE[5] / ratioWidth,
-                    CUBE[6] / ratioHeight, CUBE[7] / ratioWidth,
-            };
-        }
-
-        glCubeBuffer.clear();
-        glCubeBuffer.put(cube).position(0);
-        glTextureBuffer.clear();
-        glTextureBuffer.put(textureCords).position(0);
-    }
-
-    private float addDistance(float coordinate, float distance) {
-        return coordinate == 0.0f ? distance : 1 - distance;
     }
 
     private void runAll(Queue<Runnable> queue) {
@@ -188,7 +123,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         if (bitmap == null) {
             return;
         }
-
         runOnDraw(new Runnable() {
             @Override
             public void run() {
@@ -209,7 +143,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                 }
                 imageWidth = bitmap.getWidth();
                 imageHeight = bitmap.getHeight();
-                adjustImageScaling();
             }
         });
     }
