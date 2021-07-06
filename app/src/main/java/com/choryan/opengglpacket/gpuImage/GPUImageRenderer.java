@@ -38,7 +38,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     private final FloatBuffer glTextureBuffer;
 
     private int glTextureId = NO_IMAGE;
-    private GPUImageFilter filter;
+    private GPUImageFilter curFilter;
 
     private final Queue<Runnable> runOnDraw;
     private final Queue<Runnable> runOnDrawEnd;
@@ -54,7 +54,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     private float backgroundBlue = 0;
 
     public GPUImageRenderer(final GPUImageFilter filter) {
-        this.filter = filter;
+        curFilter = filter;
         runOnDraw = new LinkedList<>();
         runOnDrawEnd = new LinkedList<>();
 
@@ -75,7 +75,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-        filter.ifNeedInit();
+        curFilter.ifNeedInit();
     }
 
     @Override
@@ -83,15 +83,15 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         outputWidth = width;
         outputHeight = height;
         GLES20.glViewport(0, 0, width, height);
-        GLES20.glUseProgram(filter.getProgram());
-        filter.onOutputSizeChanged(width, height);
+        GLES20.glUseProgram(curFilter.getProgram());
+        curFilter.onOutputSizeChanged(width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
-        filter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
+        curFilter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
         runAll(runOnDrawEnd);
     }
 
@@ -103,18 +103,18 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    public void setFilter(final GPUImageFilter filter) {
+    public void setFilter(final GPUImageFilter targetFilter) {
         runOnDraw(new Runnable() {
             @Override
             public void run() {
-                final GPUImageFilter oldFilter = GPUImageRenderer.this.filter;
-                GPUImageRenderer.this.filter = filter;
+                final GPUImageFilter oldFilter = curFilter;
+                curFilter = targetFilter;
                 if (oldFilter != null) {
                     oldFilter.destroy();
                 }
-                GPUImageRenderer.this.filter.ifNeedInit();
-                GLES20.glUseProgram(GPUImageRenderer.this.filter.getProgram());
-                GPUImageRenderer.this.filter.onOutputSizeChanged(outputWidth, outputHeight);
+                curFilter.ifNeedInit();
+                GLES20.glUseProgram(curFilter.getProgram());
+                curFilter.onOutputSizeChanged(outputWidth, outputHeight);
             }
         });
     }

@@ -27,7 +27,7 @@ class DrawBitmapSobelActivity : BaseActivity(R.layout.activity_draw_bitmap_sobel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.wnmt110_4))
+        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
         btn_render.setOnClickListener {
             val curFilter = GPUImageSobelEdgeDetectionFilter()
             curFilter.setLineSize(4.0f)
