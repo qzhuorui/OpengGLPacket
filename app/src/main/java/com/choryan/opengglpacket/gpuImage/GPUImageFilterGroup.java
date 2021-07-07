@@ -12,9 +12,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.choryan.opengglpacket.gpuImage.GPUImageRenderer.CUBE;
-import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
-
 /**
  * @author: ChoRyan Quan
  * @date: 2021/7/6
@@ -28,13 +25,11 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     private int[] frameBuffers;
     private int[] frameBufferTextures;
 
-    private final FloatBuffer glCubeBuffer;
-    private final FloatBuffer glTextureBuffer;
     private final FloatBuffer glTextureFlipBuffer;
 
     public GPUImageFilterGroup() {
         this(null);
-        LogUtil.print("GPUImageFilterGroup");
+        LogUtil.print("GPUImageFilterGroup ******");
     }
 
     public GPUImageFilterGroup(List<GPUImageFilter> filters) {
@@ -45,22 +40,12 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             updateMergedFilters();
         }
 
-        glCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        glCubeBuffer.put(CUBE).position(0);
-
-        glTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        glTextureBuffer.put(TEXTURE_NO_ROTATION).position(0);
-
         float[] flipTexture = TextureRotationUtil.getRotation(Rotation.NORMAL, false, true);
         glTextureFlipBuffer = ByteBuffer.allocateDirect(flipTexture.length * 4)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer();
         glTextureFlipBuffer.put(flipTexture).position(0);
-        LogUtil.print("GPUImageFilterGroup2");
+        LogUtil.print("GPUImageFilterGroup2 ******");
     }
 
     public void addFilter(GPUImageFilter aFilter) {
@@ -74,7 +59,8 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        LogUtil.print("GPUImageFilterGroup-onInit");
+        LogUtil.print("GPUImageFilterGroup-onInit ******");
+
         for (GPUImageFilter filter : filters) {
             filter.ifNeedInit();
         }
@@ -103,7 +89,8 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     @Override
     public void onOutputSizeChanged(int width, int height) {
         super.onOutputSizeChanged(width, height);
-        LogUtil.print("GPUImageFilterGroup-onOutputSizeChanged");
+        LogUtil.print("GPUImageFilterGroup-onOutputSizeChanged ******");
+
         if (frameBuffers != null) {
             destroyFramebuffers();
         }
@@ -141,7 +128,8 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     @Override
     public void onDraw(int textureId, FloatBuffer cubeBuffer, FloatBuffer textureBuffer) {
-        LogUtil.print("GPUImageFilterGroup-onDraw");
+        LogUtil.print("GPUImageFilterGroup-onDraw ******");
+
         runPendingOnDrawTasks();
         if (!isInitialized() || frameBuffers == null || frameBufferTextures == null) {
             return;
@@ -158,12 +146,10 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                     GLES20.glClearColor(0, 0, 0, 0);
                 }
 
-                if (i == 0) {
-                    filter.onDraw(previousTexture, cubeBuffer, textureBuffer);
-                } else if (i == size - 1) {
-                    filter.onDraw(previousTexture, glCubeBuffer, (size % 2 == 0) ? glTextureFlipBuffer : glTextureBuffer);
+                if (i == size - 1) {
+                    filter.onDraw(previousTexture, cubeBuffer, (size % 2 == 0) ? glTextureFlipBuffer : textureBuffer);
                 } else {
-                    filter.onDraw(previousTexture, glCubeBuffer, glTextureBuffer);
+                    filter.onDraw(previousTexture, cubeBuffer, textureBuffer);
                 }
 
                 if (isNotLast) {

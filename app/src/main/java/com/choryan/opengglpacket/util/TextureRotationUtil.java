@@ -18,6 +18,20 @@ package com.choryan.opengglpacket.util;
 
 public class TextureRotationUtil {
 
+    public static final float CUBE[] = {
+            -1.0f, -1.0f,
+            1.0f, -1.0f,
+            -1.0f, 1.0f,
+            1.0f, 1.0f,
+    };
+
+    public static final float TEXTURE_NO_ROTATION0[] = {
+            0.0f, 0.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+    };
+
     public static final float TEXTURE_NO_ROTATION[] = {
             0.0f, 1.0f,
             1.0f, 1.0f,

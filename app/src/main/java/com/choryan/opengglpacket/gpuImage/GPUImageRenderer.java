@@ -7,21 +7,19 @@ import android.opengl.GLSurfaceView;
 
 import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.OpenGlUtils;
-import com.choryan.opengglpacket.util.Rotation;
-import com.choryan.opengglpacket.util.TextureRotationUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
 import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
+import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION0;
 
 /**
  * @author: ChoRyan Quan
@@ -30,12 +28,6 @@ import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTA
 public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     private static final int NO_IMAGE = -1;
-    public static final float CUBE[] = {
-            -1.0f, -1.0f,
-            1.0f, -1.0f,
-            -1.0f, 1.0f,
-            1.0f, 1.0f,
-    };
 
     private final FloatBuffer glCubeBuffer;
     private final FloatBuffer glTextureBuffer;
@@ -78,29 +70,31 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        LogUtil.print("GPUImageRenderer-onSurfaceCreated ********************");
+
         GLES20.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
-        LogUtil.print("GPUImageRenderer-onSurfaceCreated");
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        LogUtil.print("GPUImageRenderer-onSurfaceChanged ********************");
+
         outputWidth = width;
         outputHeight = height;
         GLES20.glViewport(0, 0, width, height);
-        GLES20.glUseProgram(curFilter.getProgram());
         curFilter.onOutputSizeChanged(width, height);
-        LogUtil.print("GPUImageRenderer-onSurfaceChanged");
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        LogUtil.print("GPUImageRenderer-onDrawFrame ********************");
+
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
         curFilter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
         runAll(runOnDrawEnd);
-        LogUtil.print("GPUImageRenderer-onDrawFrame");
     }
 
     private void runAll(Queue<Runnable> queue) {
@@ -121,7 +115,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
                     oldFilter.destroy();
                 }
                 curFilter.ifNeedInit();
-                GLES20.glUseProgram(curFilter.getProgram());
                 curFilter.onOutputSizeChanged(outputWidth, outputHeight);
             }
         });

@@ -15,6 +15,8 @@ import java.util.LinkedList;
  */
 public class GPUImageFilter {
 
+    private final String curClassName = this.getClass().getSimpleName();
+
     public static final String NO_FILTER_VERTEX_SHADER = "" +
             "attribute vec4 position;\n" +
             "attribute vec4 inputTextureCoordinate;\n" +
@@ -52,36 +54,38 @@ public class GPUImageFilter {
 
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
-        LogUtil.print("GPUImageFilter");
+        LogUtil.print("GPUImageFilter curClass: " + curClassName);
     }
 
     public GPUImageFilter(String vertexShader, String fragmentShader) {
         runOnDraw = new LinkedList<>();
         this.vertexShader = vertexShader;
         this.fragmentShader = fragmentShader;
-        LogUtil.print("GPUImageFilter2");
+        LogUtil.print("GPUImageFilter2 curClass: " + curClassName);
     }
 
     public void ifNeedInit() {
         if (!isInitialized) {
-            LogUtil.print("GPUImageFilter-ifNeedInit");
+            LogUtil.print("GPUImageFilter-ifNeedInit curClass: " + curClassName);
             init();
         }
     }
 
     private void init() {
-        LogUtil.print("GPUImageFilter-init");
+        LogUtil.print("GPUImageFilter-init curClass: " + curClassName);
+
         onInit();
         onInitialized();
     }
 
     public void onInit() {
+        LogUtil.print("GPUImageFilter-onInit  curClass: " + curClassName);
+
         glProgId = OpenGlUtils.loadProgram(vertexShader, fragmentShader);
         glAttribPosition = GLES20.glGetAttribLocation(glProgId, "position");
         glUniformTexture = GLES20.glGetUniformLocation(glProgId, "inputImageTexture");
         glAttribTextureCoordinate = GLES20.glGetAttribLocation(glProgId, "inputTextureCoordinate");
         isInitialized = true;
-        LogUtil.print("GPUImageFilter-onInit");
     }
 
     public void onInitialized() {
@@ -97,13 +101,16 @@ public class GPUImageFilter {
     }
 
     public void onOutputSizeChanged(final int width, final int height) {
+        LogUtil.print("GPUImageFilter-onOutputSizeChanged curClass: " + curClassName);
+
         outputWidth = width;
         outputHeight = height;
-        LogUtil.print("GPUImageFilter-onOutputSizeChanged");
     }
 
     public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
                        final FloatBuffer textureBuffer) {
+
+        LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
 
         GLES20.glUseProgram(glProgId);
         runPendingOnDrawTasks();
@@ -129,7 +136,6 @@ public class GPUImageFilter {
         GLES20.glDisableVertexAttribArray(glAttribPosition);
         GLES20.glDisableVertexAttribArray(glAttribTextureCoordinate);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        LogUtil.print("GPUImageFilter-onDraw");
     }
 
     protected void runPendingOnDrawTasks() {
