@@ -2,6 +2,7 @@ package com.choryan.opengglpacket.gpuImage;
 
 import android.graphics.PointF;
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.OpenGlUtils;
@@ -107,8 +108,7 @@ public class GPUImageFilter {
         outputHeight = height;
     }
 
-    public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
-                       final FloatBuffer textureBuffer) {
+    public void onDraw(int textureId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
 
         LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
 
@@ -118,13 +118,13 @@ public class GPUImageFilter {
             return;
         }
 
-        cubeBuffer.position(0);
-        textureBuffer.position(0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, frameTextureBufferId);
         GLES20.glEnableVertexAttribArray(glAttribPosition);
         GLES20.glEnableVertexAttribArray(glAttribTextureCoordinate);
 
-        GLES20.glVertexAttribPointer(glAttribPosition, 2, GLES20.GL_FLOAT, false, 0, cubeBuffer);
-        GLES20.glVertexAttribPointer(glAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
+        GLES20.glVertexAttribPointer(glAttribPosition, 2, GLES20.GL_FLOAT, false, 0, 0);
+        GLES20.glVertexAttribPointer(glAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, 0);
 
         if (textureId != OpenGlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);

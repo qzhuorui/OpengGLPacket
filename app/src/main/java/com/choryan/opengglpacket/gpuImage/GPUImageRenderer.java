@@ -3,10 +3,13 @@ package com.choryan.opengglpacket.gpuImage;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 
 import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.OpenGlUtils;
+import com.choryan.opengglpacket.util.Rotation;
+import com.choryan.opengglpacket.util.TextureRotationUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -29,8 +32,12 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     private static final int NO_IMAGE = -1;
 
-    private final FloatBuffer glCubeBuffer;
-    private final FloatBuffer glTextureBuffer;
+    private FloatBuffer glCubeBuffer;
+    protected int mVertexBufferId;
+    private FloatBuffer glTextureBuffer;
+    protected int mFrameTextureBufferId;
+    private FloatBuffer glTextureFlipBuffer;
+    protected int mFrameFlipTextureBufferId;
 
     private int glTextureId = NO_IMAGE;
     private GPUImageFilter curFilter;
@@ -54,27 +61,50 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         runOnDraw = new LinkedList<>();
         runOnDrawEnd = new LinkedList<>();
 
-        glCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer()
-                .put(CUBE);
-        glCubeBuffer.position(0);
-
-        glTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer()
-                .put(TEXTURE_NO_ROTATION);
-        glTextureBuffer.position(0);
         LogUtil.print("GPUImageRenderer");
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         LogUtil.print("GPUImageRenderer-onSurfaceCreated ********************");
-
+        initVertexBufferObjects();
         GLES20.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
+    }
+
+    private void initVertexBufferObjects() {
+        int[] vbo = new int[3];
+        GLES30.glGenBuffers(3, vbo, 0);
+
+        glCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(CUBE);
+        glCubeBuffer.position(0);
+        mVertexBufferId = vbo[0];
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVertexBufferId);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, CUBE.length * 4, glCubeBuffer, GLES30.GL_STATIC_DRAW);
+
+        glTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(TEXTURE_NO_ROTATION);
+        glTextureBuffer.position(0);
+        mFrameTextureBufferId = vbo[1];
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mFrameTextureBufferId);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, TEXTURE_NO_ROTATION.length * 4, glTextureBuffer, GLES30.GL_STATIC_DRAW);
+
+        float[] flipTexture = TextureRotationUtil.getRotation(Rotation.NORMAL, false, true);
+        glTextureFlipBuffer = ByteBuffer.allocateDirect(flipTexture.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer();
+        glTextureFlipBuffer.put(flipTexture).position(0);
+        mFrameFlipTextureBufferId = vbo[2];
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mFrameFlipTextureBufferId);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, flipTexture.length * 4, glTextureFlipBuffer, GLES30.GL_STATIC_DRAW);
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
     }
 
     @Override
@@ -93,7 +123,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
-        curFilter.onDraw(glTextureId, glCubeBuffer, glTextureBuffer);
+        curFilter.onDraw(glTextureId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
         runAll(runOnDrawEnd);
     }
 

@@ -1,6 +1,7 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.choryan.opengglpacket.util.LogUtil;
 import com.choryan.opengglpacket.util.Rotation;
@@ -11,6 +12,8 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
 
 /**
  * @author: ChoRyan Quan
@@ -25,7 +28,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     private int[] frameBuffers;
     private int[] frameBufferTextures;
 
-    private final FloatBuffer glTextureFlipBuffer;
 
     public GPUImageFilterGroup() {
         this(null);
@@ -40,11 +42,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             updateMergedFilters();
         }
 
-        float[] flipTexture = TextureRotationUtil.getRotation(Rotation.NORMAL, false, true);
-        glTextureFlipBuffer = ByteBuffer.allocateDirect(flipTexture.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        glTextureFlipBuffer.put(flipTexture).position(0);
         LogUtil.print("GPUImageFilterGroup2 ******");
     }
 
@@ -127,7 +124,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     }
 
     @Override
-    public void onDraw(int textureId, FloatBuffer cubeBuffer, FloatBuffer textureBuffer) {
+    public void onDraw(int textureId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
         LogUtil.print("GPUImageFilterGroup-onDraw ******");
 
         runPendingOnDrawTasks();
@@ -147,9 +144,9 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 }
 
                 if (i == size - 1) {
-                    filter.onDraw(previousTexture, cubeBuffer, (size % 2 == 0) ? glTextureFlipBuffer : textureBuffer);
+                    filter.onDraw(previousTexture, vertexBufferId, (size % 2 == 0) ? frameFlipTextureBufferId : frameTextureBufferId, -1);
                 } else {
-                    filter.onDraw(previousTexture, cubeBuffer, textureBuffer);
+                    filter.onDraw(previousTexture, vertexBufferId, frameTextureBufferId, -1);
                 }
 
                 if (isNotLast) {
