@@ -1,7 +1,6 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
@@ -22,7 +21,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
 import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
-import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION0;
 
 /**
  * @author: ChoRyan Quan
@@ -54,7 +52,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     private float backgroundRed = 0;
     private float backgroundGreen = 0;
-    private float backgroundBlue = 0;
+    private float backgroundBlue = 1;
 
     public GPUImageRenderer(final GPUImageFilter filter) {
         curFilter = filter;
@@ -161,21 +159,8 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         runOnDraw(new Runnable() {
             @Override
             public void run() {
-                Bitmap resizedBitmap = null;
-                if (bitmap.getWidth() % 2 == 1) {
-                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth() + 1, bitmap.getHeight(),
-                            Bitmap.Config.ARGB_8888);
-                    resizedBitmap.setDensity(bitmap.getDensity());
-                    Canvas can = new Canvas(resizedBitmap);
-                    can.drawARGB(0x00, 0x00, 0x00, 0x00);
-                    can.drawBitmap(bitmap, 0, 0, null);
-                }
+                glTextureId = OpenGlUtils.loadTexture(bitmap, glTextureId, recycle);
 
-                glTextureId = OpenGlUtils.loadTexture(
-                        resizedBitmap != null ? resizedBitmap : bitmap, glTextureId, recycle);
-                if (resizedBitmap != null) {
-                    resizedBitmap.recycle();
-                }
                 imageWidth = bitmap.getWidth();
                 imageHeight = bitmap.getHeight();
             }
