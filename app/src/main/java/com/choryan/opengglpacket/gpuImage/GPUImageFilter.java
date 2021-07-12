@@ -43,6 +43,7 @@ public class GPUImageFilter {
     protected final LinkedList<Runnable> runOnDraw;
     private final String vertexShader;
     private final String fragmentShader;
+    private int curVaoId;
     private int glProgId;
     private int glAttribPosition;//vertex Coordinate
     private int glUniformTexture;//texture id
@@ -108,7 +109,23 @@ public class GPUImageFilter {
         outputHeight = height;
     }
 
-    public void onDraw(int textureId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
+    public void bindVAOData(int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
+        curVaoId = vaoId;
+        GLES30.glBindVertexArray(curVaoId);
+
+        GLES20.glEnableVertexAttribArray(glAttribPosition);
+        GLES20.glEnableVertexAttribArray(glAttribTextureCoordinate);
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glVertexAttribPointer(glAttribPosition, 2, GLES20.GL_FLOAT, false, 0, 0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, frameTextureBufferId);
+        GLES20.glVertexAttribPointer(glAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, 0);
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
+        GLES30.glBindVertexArray(0);
+    }
+
+    public void onDraw(int textureId, int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
 
         LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
 
@@ -118,13 +135,7 @@ public class GPUImageFilter {
             return;
         }
 
-        GLES20.glEnableVertexAttribArray(glAttribPosition);
-        GLES20.glEnableVertexAttribArray(glAttribTextureCoordinate);
-
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vertexBufferId);
-        GLES20.glVertexAttribPointer(glAttribPosition, 2, GLES20.GL_FLOAT, false, 0, 0);
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, frameTextureBufferId);
-        GLES20.glVertexAttribPointer(glAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, 0);
+        GLES30.glBindVertexArray(curVaoId);
 
         if (textureId != OpenGlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -136,7 +147,7 @@ public class GPUImageFilter {
         GLES20.glDisableVertexAttribArray(glAttribPosition);
         GLES20.glDisableVertexAttribArray(glAttribTextureCoordinate);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
+        GLES30.glBindVertexArray(0);
     }
 
     protected void runPendingOnDrawTasks() {

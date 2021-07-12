@@ -124,7 +124,19 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     }
 
     @Override
-    public void onDraw(int textureId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
+    public void bindVAOData(int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
+        if (frameBuffers != null) {
+            destroyFramebuffers();
+        }
+
+        int size = filters.size();
+        for (int i = 0; i < size; i++) {
+            filters.get(i).bindVAOData(vaoId, vertexBufferId, frameTextureBufferId, frameFlipTextureBufferId);
+        }
+    }
+
+    @Override
+    public void onDraw(int textureId, int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
         LogUtil.print("GPUImageFilterGroup-onDraw ******");
 
         runPendingOnDrawTasks();
@@ -144,9 +156,9 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 }
 
                 if (i == size - 1) {
-                    filter.onDraw(previousTexture, vertexBufferId, (size % 2 == 0) ? frameFlipTextureBufferId : frameTextureBufferId, -1);
+                    filter.onDraw(previousTexture, vaoId, vertexBufferId, (size % 2 == 0) ? frameFlipTextureBufferId : frameTextureBufferId, -1);
                 } else {
-                    filter.onDraw(previousTexture, vertexBufferId, frameTextureBufferId, -1);
+                    filter.onDraw(previousTexture, vaoId, vertexBufferId, frameTextureBufferId, -1);
                 }
 
                 if (isNotLast) {

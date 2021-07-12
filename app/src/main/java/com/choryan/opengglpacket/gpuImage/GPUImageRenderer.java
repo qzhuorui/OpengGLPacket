@@ -30,6 +30,8 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
     private static final int NO_IMAGE = -1;
 
+    private int vaoId;
+
     private FloatBuffer glCubeBuffer;
     protected int mVertexBufferId;
     private FloatBuffer glTextureBuffer;
@@ -72,6 +74,10 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     }
 
     private void initVertexBufferObjects() {
+        int[] vao = new int[1];
+        GLES30.glGenVertexArrays(1, vao, 0);
+        vaoId = vao[0];
+
         int[] vbo = new int[3];
         GLES30.glGenBuffers(3, vbo, 0);
 
@@ -112,7 +118,9 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         outputWidth = width;
         outputHeight = height;
         GLES20.glViewport(0, 0, width, height);
+
         curFilter.onOutputSizeChanged(width, height);
+        curFilter.bindVAOData(vaoId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
     }
 
     @Override
@@ -121,7 +129,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
-        curFilter.onDraw(glTextureId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
+        curFilter.onDraw(glTextureId, vaoId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
         runAll(runOnDrawEnd);
     }
 
