@@ -1,7 +1,6 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 
@@ -68,8 +67,8 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         LogUtil.print("GPUImageRenderer-onSurfaceCreated ********************");
         initVertexBufferObjects();
-        GLES20.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
-        GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+        GLES30.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
+        GLES30.glDisable(GLES30.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
     }
 
@@ -117,7 +116,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
         outputWidth = width;
         outputHeight = height;
-        GLES20.glViewport(0, 0, width, height);
+        GLES30.glViewport(0, 0, width, height);
 
         curFilter.onOutputSizeChanged(width, height);
         curFilter.bindVAOData(vaoId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
@@ -127,7 +126,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         LogUtil.print("GPUImageRenderer-onDrawFrame ********************");
 
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
         curFilter.onDraw(glTextureId, vaoId, mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
         runAll(runOnDrawEnd);

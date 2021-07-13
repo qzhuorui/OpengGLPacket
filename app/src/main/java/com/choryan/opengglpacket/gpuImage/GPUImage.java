@@ -22,25 +22,26 @@ public class GPUImage {
 
 
     public GPUImage(final Context context) {
-        if (!supportsOpenGLES2(context)) {
-            throw new IllegalStateException("OpenGL ES 2.0 is not supported on this phone.");
+        //淦 2.0没有VAO
+        if (!supportsOpenGLES3(context)) {
+            throw new IllegalStateException("OpenGL ES 3.0 is not supported on this phone.");
         }
         this.context = context;
         filter = new GPUImageFilter();
         renderer = new GPUImageRenderer(filter);
     }
 
-    private boolean supportsOpenGLES2(final Context context) {
+    private boolean supportsOpenGLES3(final Context context) {
         final ActivityManager activityManager = (ActivityManager)
                 context.getSystemService(Context.ACTIVITY_SERVICE);
         final ConfigurationInfo configurationInfo =
                 activityManager.getDeviceConfigurationInfo();
-        return configurationInfo.reqGlEsVersion >= 0x20000;
+        return configurationInfo.reqGlEsVersion >= 0x30000;
     }
 
     public void setGLSurfaceView(final GLSurfaceView view) {
         glSurfaceView = view;
-        glSurfaceView.setEGLContextClientVersion(2);
+        glSurfaceView.setEGLContextClientVersion(3);
         glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         glSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
         glSurfaceView.setRenderer(renderer);
@@ -65,7 +66,7 @@ public class GPUImage {
         requestRender();
     }
 
-    public void removeALlFilter(){
+    public void removeALlFilter() {
         renderer.removeAllFilter();
         requestRender();
     }
