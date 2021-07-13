@@ -82,6 +82,10 @@ public class GPUImageFilter {
     public void onInit() {
         LogUtil.print("GPUImageFilter-onInit  curClass: " + curClassName);
 
+        int[] vao = new int[1];
+        GLES30.glGenVertexArrays(1, vao, 0);
+        curVaoId = vao[0];
+
         glProgId = OpenGlUtils.loadProgram(vertexShader, fragmentShader);
         glAttribPosition = GLES30.glGetAttribLocation(glProgId, "position");
         glUniformTexture = GLES30.glGetUniformLocation(glProgId, "inputImageTexture");
@@ -108,8 +112,7 @@ public class GPUImageFilter {
         outputHeight = height;
     }
 
-    public void bindVAOData(int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
-        curVaoId = vaoId;
+    public void bindVAOData(int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
         GLES30.glBindVertexArray(curVaoId);
 
         GLES30.glEnableVertexAttribArray(glAttribPosition);
@@ -126,8 +129,7 @@ public class GPUImageFilter {
         GLES30.glDisableVertexAttribArray(glAttribTextureCoordinate);
     }
 
-    public void onDraw(int textureId, int vaoId, int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
-
+    public void onDraw(int textureId) {
         LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
 
         GLES30.glUseProgram(glProgId);
