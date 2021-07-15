@@ -21,6 +21,10 @@ import android.opengl.GLES20;
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter;
 
 public class GPUImage3x3TextureSamplingFilter extends GPUImageFilter {
+    /**
+     * 空域滤波器对图像做模版卷积处理
+     * 1.模版遍历图像，使模版中心分别与图中像素重合
+     */
     public static final String THREE_X_THREE_TEXTURE_SAMPLING_VERTEX_SHADER = "" +
             "attribute vec4 position;\n" +
             "attribute vec4 inputTextureCoordinate;\n" +
@@ -81,6 +85,7 @@ public class GPUImage3x3TextureSamplingFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
+        //决定step大小
         uniformTexelWidthLocation = GLES20.glGetUniformLocation(getProgram(), "texelWidth");
         uniformTexelHeightLocation = GLES20.glGetUniformLocation(getProgram(), "texelHeight");
     }

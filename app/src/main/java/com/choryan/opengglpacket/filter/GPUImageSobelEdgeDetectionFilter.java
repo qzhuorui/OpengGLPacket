@@ -7,6 +7,17 @@ import com.choryan.opengglpacket.gpuImage.GPUImageFilterGroup;
  * @date: 2021/7/5
  */
 public class GPUImageSobelEdgeDetectionFilter extends GPUImageFilterGroup {
+    /**
+     * Sobel算子
+     * h:
+     * -1 -2 -1
+     * 0  0  0
+     * 1  2  1
+     * v:
+     * -1 0 1
+     * -2 0 2
+     * -1 0 1
+     */
     public static final String SOBEL_EDGE_DETECTION = "" +
             "precision mediump float;\n" +
             "\n" +
