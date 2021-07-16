@@ -17,6 +17,8 @@ public class GPUImageSobelEdgeDetectionFilter extends GPUImageFilterGroup {
      * -1 0 1
      * -2 0 2
      * -1 0 1
+     * <p>
+     * sober计算横向纵向乘积
      */
     public static final String SOBEL_EDGE_DETECTION = "" +
             "precision mediump float;\n" +

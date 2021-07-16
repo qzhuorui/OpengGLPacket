@@ -8,6 +8,9 @@ import com.choryan.opengglpacket.gpuImage.GPUImageFilter;
  */
 public class GPUImageGrayscaleFilter extends GPUImageFilter {
 
+    /**
+     * 明亮度公式，实现灰度效果
+     */
     public static final String GRAYSCALE_FRAGMENT_SHADER = "" +
             "precision highp float;\n" +
             "\n" +
