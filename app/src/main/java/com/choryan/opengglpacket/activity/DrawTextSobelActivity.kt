@@ -8,8 +8,8 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
-import com.choryan.opengglpacket.render.DrawTextRender
-import kotlinx.android.synthetic.main.activity_draw_text.*
+import com.choryan.opengglpacket.filter.GPUImageSobelEdgeDetectionFilter
+import kotlinx.android.synthetic.main.activity_draw_sobel_text.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,23 +20,14 @@ import kotlinx.coroutines.withContext
  */
 class DrawTextSobelActivity : BaseActivity(R.layout.activity_draw_sobel_text) {
 
-    private val drawTextRender by lazy {
-        DrawTextRender()
-    }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        initRender()
         initClick()
     }
 
-    private fun initRender() {
-        v_surface_view.setEGLContextClientVersion(3)
-        v_surface_view.setRenderer(drawTextRender)
-    }
-
     private fun initClick() {
-        btn_done.setOnClickListener {
+        btn_render_bitmap.setOnClickListener {
             tv_display_text.text = et_edit_text.editableText.toString()
             tv_display_text.post {
                 lifecycleScope.launch {
@@ -46,11 +37,14 @@ class DrawTextSobelActivity : BaseActivity(R.layout.activity_draw_sobel_text) {
                         tv_display_text.draw(canvas)
                         bitmap
                     }
-                    drawTextRender.setRenderBitmap(renderBitmap) {
-                        v_surface_view.requestRender()
-                    }
+                    v_surface_view.setImage(renderBitmap)
                 }
             }
+        }
+        btn_render_filter.setOnClickListener {
+            val curFilter = GPUImageSobelEdgeDetectionFilter()
+            curFilter.setLineSize(4.0f)
+            v_surface_view.setFilter(curFilter)
         }
     }
 
