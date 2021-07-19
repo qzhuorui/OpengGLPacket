@@ -36,6 +36,9 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_draw_bitmap_sobel_activity.setOnClickListener {
             DrawBitmapSobelActivity.startActivity(this)
         }
+        tv_draw_text_sobel_activity.setOnClickListener {
+            DrawTextSobelActivity.startActivity(this)
+        }
         tv_draw_bitmap_laplace_activity.setOnClickListener {
             DrawBitmapLaplaceActivity.startActivity(this)
         }
