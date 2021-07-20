@@ -43,7 +43,7 @@ class DrawTextSobelActivity : BaseActivity(R.layout.activity_draw_sobel_text) {
         }
         btn_render_filter.setOnClickListener {
             val curFilter = GPUImageSobelEdgeDetectionFilter()
-            curFilter.setLineSize(4.0f)
+            curFilter.setLineSize(3.0f)
             v_surface_view.setFilter(curFilter)
         }
     }
