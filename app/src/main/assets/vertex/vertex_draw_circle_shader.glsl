@@ -26,11 +26,16 @@ void main() {
     //        f_textureColor = af_Color;
     //    }
 
-    if (distance >= 0.5){
-        f_textureColor = vec4(1.0, 1.0, 1.0, 1.0);
-    } else {
-        f_textureColor = af_Color;
-    }
+    float tmp = step(distance, 0.5);
+
+    f_textureColor = tmp * af_Color + (1.0 - tmp) * vec4(1.0, 1.0, 1.0, 1.0);
+
+    //    if (distance >= 0.5){
+    //        f_textureColor = vec4(1.0, 1.0, 1.0, 1.0);
+    //    } else {
+    //        f_textureColor = af_Color;
+    //    }
+
     gl_Position = v_texturePos;
 
 }
