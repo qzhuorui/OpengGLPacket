@@ -22,5 +22,24 @@ void main()
     //4Z5 - (Z2 + Z4 + Z6 + Z8)
     vec3 color = textureColor * centerMultiplier - (leftTextureColor * edgeMultiplier + rightTextureColor * edgeMultiplier + topTextureColor * edgeMultiplier + bottomTextureColor * edgeMultiplier);
 
-    gl_FragColor = vec4(color, texture2D(inputImageTexture, bottomTextureCoordinate).a);
+    float mag = length(color);
+
+    float tmp = step(mag, 0.2);
+
+    if (mag == 0.0){
+        gl_FragColor = vec4(textureColor, 1.0);
+        return;
+    }
+
+    gl_FragColor = (1.0 - tmp) * vec4(textureColor, 1.0) + tmp * vec4(0.0, 0.0, 1.0, 1.0);
+
+    //    if (mag == 0.0){
+    //        gl_FragColor = vec4(textureColor, 1.0);
+    //    } else if (mag > 0.2){
+    //        gl_FragColor = vec4(textureColor, 1.0);
+    //    } else {
+    //        gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+    //    }
+
+    //    gl_FragColor = vec4(color, texture2D(inputImageTexture, bottomTextureCoordinate).a);
 }
