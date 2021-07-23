@@ -45,5 +45,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_draw_text_laplace_activity.setOnClickListener {
             DrawTextLaplaceActivity.startActivity(this)
         }
+        tv_draw_bitmap_filter_activity.setOnClickListener {
+            DrawBitmapFilterActivity.startActivity(this)
+        }
     }
 }
