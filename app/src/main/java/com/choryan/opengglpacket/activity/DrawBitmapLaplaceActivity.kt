@@ -18,6 +18,15 @@ class DrawBitmapLaplaceActivity : BaseActivity(R.layout.activity_draw_bitmap_lap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /**
+         * 对于有alpha通道的bitmap，Android系统解码API会自动执行预乘操作
+         * 即bitmap每个像素的RGB值在解码时会自动乘以当前像素的alpha值
+         * 意味着bitmap中存储的RGB值和原生图片的RGB值是不同的
+         *
+         * ---
+         * 1.bitmap解码不做预乘
+         * 2.OpenGL blend不乘alpha
+         */
         v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
         btn_render.setOnClickListener {
             val curFilter = GPUImageSharpenFilter()
