@@ -1,19 +1,11 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
-import android.opengl.GLES30;
 
 import com.choryan.opengglpacket.util.LogUtil;
-import com.choryan.opengglpacket.util.Rotation;
-import com.choryan.opengglpacket.util.TextureRotationUtil;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
 
 /**
  * @author: ChoRyan Quan
