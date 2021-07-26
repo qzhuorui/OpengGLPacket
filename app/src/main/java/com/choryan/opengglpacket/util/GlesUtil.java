@@ -147,6 +147,7 @@ public class GlesUtil {
         int[] textureIds = new int[1];
         GLES30.glGenTextures(1, textureIds, 0);
         if (textureIds[0] == 0) {
+            //must GLThread
             Log.e(TAG, "loadBitmapTexture: glGenTextures is 0");
             return -1;
         }

@@ -2,17 +2,12 @@ package com.choryan.opengglpacket.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.PointF
 import android.os.Bundle
-import androidx.core.graphics.BitmapCompat
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
-import com.choryan.opengglpacket.filter.GPUImageBlendBitmapFilter
-import com.choryan.opengglpacket.filter.GPUImageSobelEdgeDetectionFilter
-import com.choryan.opengglpacket.filter.GPUImageVignetteFilter
+import com.choryan.opengglpacket.filter.CustomBlendBitmapFilter
+import com.choryan.opengglpacket.filter.CustomStickerBitmapFilter
 import kotlinx.android.synthetic.main.activity_draw_bitmap_sobel.*
 
 /**
@@ -30,8 +25,7 @@ class BlendBitmapFilterActivity : BaseActivity(R.layout.activity_draw_bitmap_fil
         val dstBitmap = BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap)
         v_gpuimage_view.setImage(dstBitmap)
         btn_render.setOnClickListener {
-            val curFilter = GPUImageBlendBitmapFilter()
-            v_gpuimage_view.setImage(sourceBitmap)
+            val curFilter = CustomBlendBitmapFilter(sourceBitmap, dstBitmap)
             v_gpuimage_view.setFilter(curFilter)
         }
         btn_remove_render.setOnClickListener {
