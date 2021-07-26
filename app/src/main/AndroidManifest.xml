@@ -36,6 +36,7 @@
         <activity android:name=".activity.DrawTextSobelActivity" />
         <activity android:name=".activity.DrawTextLaplaceActivity" />
         <activity android:name=".activity.DrawBitmapFilterActivity" />
+        <activity android:name=".activity.BlendBitmapFilterActivity" />
     </application>
 
 </manifest>

@@ -150,6 +150,7 @@ public class GPUImageFilter {
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         GLES30.glBindVertexArray(0);
+        onDrawArraysEnd();
     }
 
     protected void runPendingOnDrawTasks() {
@@ -161,6 +162,9 @@ public class GPUImageFilter {
     }
 
     protected void onDrawArraysPre() {
+    }
+
+    protected void onDrawArraysEnd() {
     }
 
     public boolean isInitialized() {

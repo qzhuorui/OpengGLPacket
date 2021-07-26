@@ -48,5 +48,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_draw_bitmap_filter_activity.setOnClickListener {
             DrawBitmapFilterActivity.startActivity(this)
         }
+        tv_blend_bitmap_filter_activity.setOnClickListener {
+            BlendBitmapFilterActivity.startActivity(this)
+        }
     }
 }
