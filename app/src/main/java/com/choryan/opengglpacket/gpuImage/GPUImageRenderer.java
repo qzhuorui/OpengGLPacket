@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 
+import com.choryan.opengglpacket.util.GlesUtil;
 import com.choryan.opengglpacket.util.LogUtil;
-import com.choryan.opengglpacket.util.OpenGlUtils;
 import com.choryan.opengglpacket.util.Rotation;
 import com.choryan.opengglpacket.util.TextureRotationUtil;
 
@@ -49,10 +49,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     private int imageWidth;
     private int imageHeight;
 
-    private float backgroundRed = 0;
-    private float backgroundGreen = 0;
-    private float backgroundBlue = 1;
-
     public GPUImageRenderer(final GPUImageFilter filter) {
         curFilter = filter;
         runOnDraw = new LinkedList<>();
@@ -65,7 +61,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         LogUtil.print("GPUImageRenderer-onSurfaceCreated ********************");
         initVertexBufferObjects();
-        GLES30.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES30.glDisable(GLES30.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
     }
@@ -110,7 +105,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
 
         outputWidth = width;
         outputHeight = height;
-        GLES30.glViewport(0, 0, width, height);
 
         curFilter.onOutputSizeChanged(width, height);
         curFilter.bindVAOData(mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId);
@@ -120,6 +114,10 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         LogUtil.print("GPUImageRenderer-onDrawFrame ********************");
 
+        /**
+         * 会clear，所以如果需要效果叠加，必须使用group。纹理链式传递，不能多个filter叠加调用
+         */
+        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
         curFilter.onDraw(glTextureId);
@@ -161,7 +159,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
         runOnDraw(new Runnable() {
             @Override
             public void run() {
-                glTextureId = OpenGlUtils.loadTexture(bitmap, glTextureId, recycle);
+                glTextureId = GlesUtil.loadBitmapTexture(bitmap);
 
                 imageWidth = bitmap.getWidth();
                 imageHeight = bitmap.getHeight();
