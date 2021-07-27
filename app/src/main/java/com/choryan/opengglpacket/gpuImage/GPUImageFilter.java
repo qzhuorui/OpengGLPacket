@@ -1,10 +1,10 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.graphics.PointF;
+import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 import com.choryan.opengglpacket.util.GlesUtil;
-import com.choryan.opengglpacket.util.LogUtil;
 
 import java.nio.FloatBuffer;
 import java.util.LinkedList;
@@ -48,6 +48,11 @@ public class GPUImageFilter {
     private int glUniformTexture;//texture id
     private int glAttribTextureCoordinate;//texture Coordinate
 
+    private int[] frameBuffers;
+    private int[] frameBufferTextures;
+    private int selfFboId;
+    private int selfFboTextureId;
+
     private int outputWidth;
     private int outputHeight;
 
@@ -55,33 +60,26 @@ public class GPUImageFilter {
 
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
-        LogUtil.print("GPUImageFilter curClass: " + curClassName);
     }
 
     public GPUImageFilter(String vertexShader, String fragmentShader) {
         runOnDraw = new LinkedList<>();
         this.vertexShader = vertexShader;
         this.fragmentShader = fragmentShader;
-        LogUtil.print("GPUImageFilter2 curClass: " + curClassName);
     }
 
     public void ifNeedInit() {
         if (!isInitialized) {
-            LogUtil.print("GPUImageFilter-ifNeedInit curClass: " + curClassName);
             init();
         }
     }
 
     private void init() {
-        LogUtil.print("GPUImageFilter-init curClass: " + curClassName);
-
         onInit();
         onInitialized();
     }
 
     public void onInit() {
-        LogUtil.print("GPUImageFilter-onInit  curClass: " + curClassName);
-
         int[] vao = new int[1];
         GLES30.glGenVertexArrays(1, vao, 0);
         curVaoId = vao[0];
@@ -106,13 +104,17 @@ public class GPUImageFilter {
     }
 
     public void onOutputSizeChanged(final int width, final int height) {
-        LogUtil.print("GPUImageFilter-onOutputSizeChanged curClass: " + curClassName);
-
         outputWidth = width;
         outputHeight = height;
         GLES30.glViewport(0, 0, width, height);
+        glGenFrameBuffer();
     }
 
+    /**
+     * @description 2.0没有VAO
+     * @author ChoRyan Quan
+     * @time 2021/7/27 2:44 下午
+     */
     public void bindVAOData(int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
         GLES30.glBindVertexArray(curVaoId);
 
@@ -131,8 +133,6 @@ public class GPUImageFilter {
     }
 
     public void onDraw(int textureId) {
-        LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
-
         GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
@@ -144,15 +144,12 @@ public class GPUImageFilter {
 
         GLES30.glBindVertexArray(curVaoId);
 
-        if (onBindTexturePre() != -1) {
-            LogUtil.print("onBindTexturePre");
-            textureId = onBindTexturePre();
-        }
-
         if (textureId != -1) {
             GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureId);
             GLES30.glUniform1i(glUniformTexture, 0);
+        } else {
+            throw new RuntimeException("GPUImageFilter onDraw textId is -1");
         }
         onDrawArraysPre();
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 4);
@@ -160,6 +157,14 @@ public class GPUImageFilter {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         GLES30.glBindVertexArray(0);
         onDrawArraysEnd();
+    }
+
+    public int getSelfFboId() {
+        return selfFboId;
+    }
+
+    public int getSelfFboTextureId() {
+        return selfFboTextureId;
     }
 
     protected void runPendingOnDrawTasks() {
@@ -170,14 +175,6 @@ public class GPUImageFilter {
         }
     }
 
-    protected boolean isUseFbo() {
-        return false;
-    }
-
-    protected int onBindTexturePre() {
-        return -1;
-    }
-
     protected void onDrawArraysPre() {
     }
 
@@ -186,6 +183,14 @@ public class GPUImageFilter {
 
     public boolean isInitialized() {
         return isInitialized;
+    }
+
+    public void setOutputWidth(int outputWidth) {
+        this.outputWidth = outputWidth;
+    }
+
+    public void setOutputHeight(int outputHeight) {
+        this.outputHeight = outputHeight;
     }
 
     public int getOutputWidth() {
@@ -297,6 +302,43 @@ public class GPUImageFilter {
                 GLES30.glUniformMatrix4fv(location, 1, false, matrix, 0);
             }
         });
+    }
+
+    public void glGenFrameBuffer() {
+        destroyFrameBuffers();
+        frameBuffers = new int[1];
+        frameBufferTextures = new int[1];
+
+        GLES30.glGenFramebuffers(1, frameBuffers, 0);
+        GLES20.glGenTextures(1, frameBufferTextures, 0);
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, frameBufferTextures[0]);
+        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, getOutputWidth(), getOutputHeight(), 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);
+
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffers[0]);
+        GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_TEXTURE_2D, frameBufferTextures[0], 0);
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
+
+        selfFboId = frameBuffers[0];
+        selfFboTextureId = frameBufferTextures[0];
+    }
+
+    public void destroyFrameBuffers() {
+        if (frameBufferTextures != null) {
+            GLES30.glDeleteTextures(frameBufferTextures.length, frameBufferTextures, 0);
+            frameBufferTextures = null;
+        }
+        if (frameBuffers != null) {
+            GLES30.glDeleteFramebuffers(frameBuffers.length, frameBuffers, 0);
+            frameBuffers = null;
+        }
     }
 
 }

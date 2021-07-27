@@ -39,16 +39,6 @@ public class CustomStickerBitmapFilter extends GPUImageFilter {
     }
 
     @Override
-    protected boolean isUseFbo() {
-        return isUseFBO;
-    }
-
-    @Override
-    protected int onBindTexturePre() {
-        return sourceBitmapTextureId;
-    }
-
-    @Override
     protected void onDrawArraysPre() {
         super.onDrawArraysPre();
 //        GLES30.glEnable(GLES30.GL_BLEND);

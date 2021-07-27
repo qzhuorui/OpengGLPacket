@@ -1,8 +1,7 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
-
-import com.choryan.opengglpacket.util.LogUtil;
+import android.opengl.GLES30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +15,8 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     private List<GPUImageFilter> filters;
     private List<GPUImageFilter> mergedFilters;
 
-    //fbo缓冲区和对应的textId
-    private int[] frameBuffers;
-    private int[] frameBufferTextures;
-
-
     public GPUImageFilterGroup() {
         this(null);
-        LogUtil.print("GPUImageFilterGroup ******");
     }
 
     public GPUImageFilterGroup(List<GPUImageFilter> filters) {
@@ -33,8 +26,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
         } else {
             updateMergedFilters();
         }
-
-        LogUtil.print("GPUImageFilterGroup2 ******");
     }
 
     public void addFilter(GPUImageFilter aFilter) {
@@ -48,8 +39,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        LogUtil.print("GPUImageFilterGroup-onInit ******");
-
         for (GPUImageFilter filter : filters) {
             filter.ifNeedInit();
         }
@@ -65,60 +54,25 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     }
 
     private void destroyFramebuffers() {
-        if (frameBufferTextures != null) {
-            GLES20.glDeleteTextures(frameBufferTextures.length, frameBufferTextures, 0);
-            frameBufferTextures = null;
-        }
-        if (frameBuffers != null) {
-            GLES20.glDeleteFramebuffers(frameBuffers.length, frameBuffers, 0);
-            frameBuffers = null;
+        super.destroyFrameBuffers();
+        for (GPUImageFilter filter : filters) {
+            filter.destroyFrameBuffers();
         }
     }
 
     @Override
     public void onOutputSizeChanged(int width, int height) {
-        super.onOutputSizeChanged(width, height);
-        LogUtil.print("GPUImageFilterGroup-onOutputSizeChanged ******");
-
-        if (frameBuffers != null) {
-            destroyFramebuffers();
-        }
-
+        setOutputWidth(width);
+        setOutputHeight(height);
         int size = filters.size();
         for (int i = 0; i < size; i++) {
             filters.get(i).onOutputSizeChanged(width, height);
-        }
-
-        if (mergedFilters != null && mergedFilters.size() > 0) {
-            size = mergedFilters.size();
-            frameBuffers = new int[size - 1];
-            frameBufferTextures = new int[size - 1];
-
-            for (int i = 0; i < size - 1; i++) {
-                GLES20.glGenFramebuffers(1, frameBuffers, i);
-                GLES20.glGenTextures(1, frameBufferTextures, i);
-
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, frameBufferTextures[i]);
-                GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0,
-                        GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, GLES20.GL_TEXTURE_2D, frameBufferTextures[i], 0);
-
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-            }
         }
     }
 
     @Override
     public void bindVAOData(int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
         super.bindVAOData(vertexBufferId, frameTextureBufferId, frameFlipTextureBufferId);
-
         if (mergedFilters != null) {
             int size = mergedFilters.size();
             for (int i = 0; i < size; i++) {
@@ -133,33 +87,40 @@ public class GPUImageFilterGroup extends GPUImageFilter {
     }
 
     @Override
-    public void onDraw(int textureId) {
-        LogUtil.print("GPUImageFilterGroup-onDraw ******");
-
+    public void onDraw(int screenTextureId) {
         runPendingOnDrawTasks();
-        if (!isInitialized() || frameBuffers == null || frameBufferTextures == null) {
+        if (!isInitialized()) {
             return;
         }
 
-        if (mergedFilters != null) {
+        if (mergedFilters != null && mergedFilters.size() > 0) {
             int size = mergedFilters.size();
-            int previousTexture = textureId;
+            int inputTexture = screenTextureId;
             for (int i = 0; i < size; i++) {
                 GPUImageFilter filter = mergedFilters.get(i);
-                boolean isNotLast = i < size - 1;
-                if (isNotLast || filter.isUseFbo()) {
-                    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                    GLES20.glClearColor(0, 0, 0, 0);
-                }
 
-                filter.onDraw(previousTexture);
+                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, filter.getSelfFboId());
 
-                if (isNotLast || filter.isUseFbo()) {
-                    GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-                    previousTexture = frameBufferTextures[i];
-                }
+                GLES20.glViewport(0, 0, filter.getOutputWidth(), filter.getOutputHeight());
+                GLES20.glClearColor(0, 0, 0, 1);
+                GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+
+                filter.onDraw(inputTexture);
+
+                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                inputTexture = filter.getSelfFboTextureId();
             }
         }
+    }
+
+    @Override
+    public int getSelfFboId() {
+        return mergedFilters.get(mergedFilters.size() - 1).getSelfFboId();
+    }
+
+    @Override
+    public int getSelfFboTextureId() {
+        return mergedFilters.get(mergedFilters.size() - 1).getSelfFboTextureId();
     }
 
     public List<GPUImageFilter> getFilters() {

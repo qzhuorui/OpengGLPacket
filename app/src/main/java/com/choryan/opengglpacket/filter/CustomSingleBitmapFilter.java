@@ -35,14 +35,4 @@ public class CustomSingleBitmapFilter extends GPUImageFilter {
         GLES30.glViewport(0, 0, dstBitmapW, dstBitmapH);
     }
 
-    @Override
-    protected boolean isUseFbo() {
-        return isUseFBO;
-    }
-
-    @Override
-    protected int onBindTexturePre() {
-        return dstBitmapTextureId;
-    }
-
 }

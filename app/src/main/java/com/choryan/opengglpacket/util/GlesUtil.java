@@ -8,7 +8,14 @@ import android.opengl.GLES30;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+
 import javax.microedition.khronos.opengles.GL10;
+
+import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
+import static com.choryan.opengglpacket.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
 
 /**
  * @ProjectName: AugustPlayer
@@ -197,6 +204,44 @@ public class GlesUtil {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
         GlesUtil.checkError();
+    }
+
+    /**
+     * @description init VBO
+     * @author ChoRyan Quan
+     * @time 2021/7/27 2:26 下午
+     */
+    public static int[] initVertexBufferObjects() {
+        int[] vbo = new int[3];
+        GLES30.glGenBuffers(3, vbo, 0);
+
+        FloatBuffer glCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(CUBE);
+        glCubeBuffer.position(0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vbo[0]);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, CUBE.length * 4, glCubeBuffer, GLES30.GL_STATIC_DRAW);
+
+        FloatBuffer glTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(TEXTURE_NO_ROTATION);
+        glTextureBuffer.position(0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vbo[1]);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, TEXTURE_NO_ROTATION.length * 4, glTextureBuffer, GLES30.GL_STATIC_DRAW);
+
+        float[] flipTexture = TextureRotationUtil.getRotation(Rotation.NORMAL, false, true);
+        FloatBuffer glTextureFlipBuffer = ByteBuffer.allocateDirect(flipTexture.length * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer();
+        glTextureFlipBuffer.put(flipTexture).position(0);
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vbo[2]);
+        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, flipTexture.length * 4, glTextureFlipBuffer, GLES30.GL_STATIC_DRAW);
+
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
+
+        return vbo;
     }
 
 }

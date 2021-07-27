@@ -51,5 +51,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         tv_blend_bitmap_filter_activity.setOnClickListener {
             BlendBitmapFilterActivity.startActivity(this)
         }
+        tv_new_gpuimage_activity.setOnClickListener {
+            NewGPUImageActivity.startActivity(this)
+        }
     }
 }
