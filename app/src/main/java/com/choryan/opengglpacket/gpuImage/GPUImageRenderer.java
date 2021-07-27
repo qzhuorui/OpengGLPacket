@@ -49,10 +49,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     private int imageWidth;
     private int imageHeight;
 
-    private float backgroundRed = 0;
-    private float backgroundGreen = 0;
-    private float backgroundBlue = 1;
-
     public GPUImageRenderer(final GPUImageFilter filter) {
         curFilter = filter;
         runOnDraw = new LinkedList<>();
@@ -65,7 +61,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         LogUtil.print("GPUImageRenderer-onSurfaceCreated ********************");
         initVertexBufferObjects();
-        GLES30.glClearColor(backgroundRed, backgroundGreen, backgroundBlue, 1);
         GLES30.glDisable(GLES30.GL_DEPTH_TEST);
         curFilter.ifNeedInit();
     }
@@ -120,7 +115,6 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         LogUtil.print("GPUImageRenderer-onDrawFrame ********************");
 
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
         runAll(runOnDraw);
         curFilter.onDraw(glTextureId);
         runAll(runOnDrawEnd);

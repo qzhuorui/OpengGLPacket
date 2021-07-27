@@ -132,6 +132,9 @@ public class GPUImageFilter {
     public void onDraw(int textureId) {
         LogUtil.print("GPUImageFilter-onDraw curClass: " + curClassName);
 
+        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+
         GLES30.glUseProgram(glProgId);
         runPendingOnDrawTasks();
         if (!isInitialized) {
