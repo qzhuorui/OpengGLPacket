@@ -1,19 +1,11 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
-import android.opengl.GLES30;
 
 import com.choryan.opengglpacket.util.LogUtil;
-import com.choryan.opengglpacket.util.Rotation;
-import com.choryan.opengglpacket.util.TextureRotationUtil;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.choryan.opengglpacket.util.TextureRotationUtil.CUBE;
 
 /**
  * @author: ChoRyan Quan
@@ -155,14 +147,14 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             for (int i = 0; i < size; i++) {
                 GPUImageFilter filter = mergedFilters.get(i);
                 boolean isNotLast = i < size - 1;
-                if (isNotLast) {
+                if (isNotLast || filter.isUseFbo()) {
                     GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
                     GLES20.glClearColor(0, 0, 0, 0);
                 }
 
                 filter.onDraw(previousTexture);
 
-                if (isNotLast) {
+                if (isNotLast || filter.isUseFbo()) {
                     GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
                     previousTexture = frameBufferTextures[i];
                 }

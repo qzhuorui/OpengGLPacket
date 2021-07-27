@@ -3,8 +3,8 @@ package com.choryan.opengglpacket.gpuImage;
 import android.graphics.PointF;
 import android.opengl.GLES30;
 
+import com.choryan.opengglpacket.util.GlesUtil;
 import com.choryan.opengglpacket.util.LogUtil;
-import com.choryan.opengglpacket.util.OpenGlUtils;
 
 import java.nio.FloatBuffer;
 import java.util.LinkedList;
@@ -86,7 +86,7 @@ public class GPUImageFilter {
         GLES30.glGenVertexArrays(1, vao, 0);
         curVaoId = vao[0];
 
-        glProgId = OpenGlUtils.loadProgram(vertexShader, fragmentShader);
+        glProgId = GlesUtil.createProgram(vertexShader, fragmentShader);
         glAttribPosition = GLES30.glGetAttribLocation(glProgId, "position");
         glUniformTexture = GLES30.glGetUniformLocation(glProgId, "inputImageTexture");
         glAttribTextureCoordinate = GLES30.glGetAttribLocation(glProgId, "inputTextureCoordinate");
@@ -110,6 +110,7 @@ public class GPUImageFilter {
 
         outputWidth = width;
         outputHeight = height;
+        GLES30.glViewport(0, 0, width, height);
     }
 
     public void bindVAOData(int vertexBufferId, int frameTextureBufferId, int frameFlipTextureBufferId) {
@@ -143,7 +144,12 @@ public class GPUImageFilter {
 
         GLES30.glBindVertexArray(curVaoId);
 
-        if (textureId != OpenGlUtils.NO_TEXTURE) {
+        if (onBindTexturePre() != -1) {
+            LogUtil.print("onBindTexturePre");
+            textureId = onBindTexturePre();
+        }
+
+        if (textureId != -1) {
             GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureId);
             GLES30.glUniform1i(glUniformTexture, 0);
@@ -162,6 +168,14 @@ public class GPUImageFilter {
                 runOnDraw.removeFirst().run();
             }
         }
+    }
+
+    protected boolean isUseFbo() {
+        return false;
+    }
+
+    protected int onBindTexturePre() {
+        return -1;
     }
 
     protected void onDrawArraysPre() {
