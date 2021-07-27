@@ -48,6 +48,7 @@ public class OpenGlUtils {
 
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, img, 0);
         } else {
+            //替换oldTexture的一部分。此时texId中既有旧数据还有新数据
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, usedTexId);
             GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, img);
             textures[0] = usedTexId;

@@ -32,7 +32,6 @@ public class CustomSingleBitmapFilter extends GPUImageFilter {
 
     @Override
     public void onOutputSizeChanged(int width, int height) {
-//        super.onOutputSizeChanged(width, height);
         GLES30.glViewport(0, 0, dstBitmapW, dstBitmapH);
     }
 

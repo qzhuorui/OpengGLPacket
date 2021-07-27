@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
 import com.choryan.opengglpacket.filter.CustomBlendBitmapFilter
+import com.choryan.opengglpacket.filter.CustomSingleBitmapFilter
 import com.choryan.opengglpacket.filter.CustomStickerBitmapFilter
 import kotlinx.android.synthetic.main.activity_draw_bitmap_sobel.*
 
@@ -23,9 +24,11 @@ class BlendBitmapFilterActivity : BaseActivity(R.layout.activity_draw_bitmap_fil
         super.onCreate(savedInstanceState)
         val sourceBitmap = BitmapFactory.decodeResource(resources, R.mipmap.teststicker)
         val dstBitmap = BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap)
-        v_gpuimage_view.setImage(dstBitmap)
+//        v_gpuimage_view.setImage(dstBitmap)
         btn_render.setOnClickListener {
-            val curFilter = CustomBlendBitmapFilter(sourceBitmap, dstBitmap)
+//            v_gpuimage_view.setImage(sourceBitmap)
+
+            val curFilter = CustomSingleBitmapFilter(dstBitmap, false)
             v_gpuimage_view.setFilter(curFilter)
         }
         btn_remove_render.setOnClickListener {
