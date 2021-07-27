@@ -101,10 +101,6 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
                 GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, filter.getSelfFboId());
 
-                GLES20.glViewport(0, 0, filter.getOutputWidth(), filter.getOutputHeight());
-                GLES20.glClearColor(0, 0, 0, 1);
-                GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
-
                 filter.onDraw(inputTexture);
 
                 GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);

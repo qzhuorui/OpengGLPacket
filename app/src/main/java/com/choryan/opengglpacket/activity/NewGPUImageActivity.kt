@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
+import com.choryan.opengglpacket.filter.GPUImageGrayscaleFilter
 import com.choryan.opengglpacket.gpuImage.GPUImage
 import kotlinx.android.synthetic.main.activity_draw_bitmap_sobel.*
 
@@ -22,7 +23,7 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter) {
         val dstBitmap = BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap)
         v_gpuimage_view.setImageInput(GPUImage(dstBitmap))
         btn_render.setOnClickListener {
-            v_gpuimage_view.setImageInput(GPUImage(sourceBitmap))
+            v_gpuimage_view.addFilter(GPUImageGrayscaleFilter())
         }
         btn_remove_render.setOnClickListener {
         }

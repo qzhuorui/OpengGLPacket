@@ -56,10 +56,6 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        GLES30.glViewport(0, 0, width, height)
-        GLES30.glClearColor(1f, 1f, 1f, 0f)
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
-
         val inputTextureId = gpuImage!!.textureId
         if (inputTextureId != -1) {
             var outPutTextureId = inputTextureId
@@ -90,10 +86,11 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
                 add.addFilter(filter)
                 add.ifNeedInit()
                 add.onOutputSizeChanged(windowWidth, windowHeight)
-                filter.bindVAOData(mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId)
+                add.bindVAOData(mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId)
                 add
             }
         }
+        requestRender()
     }
 
     fun setImageInput(gpuImage: GPUImage) {
