@@ -6,6 +6,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.filter.GPUImageGrayscaleFilter
+import com.choryan.opengglpacket.filter.GPUImageSobelEdgeDetectionFilter
 import com.choryan.opengglpacket.filter.GPUImageVignetteFilter
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter
 
@@ -26,6 +27,7 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
         contentView.setOnTouchListener(this)
         contentView.findViewById<TextView>(R.id.tv_gray).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_vignette).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_sobel_bitmap).setOnClickListener(this)
     }
 
     fun show(parent: View?) {
@@ -41,6 +43,9 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
             }
             R.id.tv_vignette -> {
                 getCurSelectFilter(GPUImageVignetteFilter())
+            }
+            R.id.tv_sobel_bitmap -> {
+                getCurSelectFilter(GPUImageSobelEdgeDetectionFilter())
             }
         }
     }

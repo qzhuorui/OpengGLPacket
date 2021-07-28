@@ -76,8 +76,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             for (int i = 0; i < size; i++) {
                 GPUImageFilter filter = mergedFilters.get(i);
                 if (i == size - 1) {
-//                    filter.bindVAOData(vertexBufferId, (size % 2 == 0) ? frameFlipTextureBufferId : frameTextureBufferId, frameFlipTextureBufferId);
-                    filter.bindVAOData(vertexBufferId, frameFlipTextureBufferId, frameFlipTextureBufferId);
+                    filter.bindVAOData(vertexBufferId, (size % 2 == 0) ? frameTextureBufferId : frameFlipTextureBufferId, frameFlipTextureBufferId);
                 } else {
                     filter.bindVAOData(vertexBufferId, frameTextureBufferId, frameFlipTextureBufferId);
                 }

@@ -1,6 +1,7 @@
 package com.choryan.opengglpacket.gpuImage
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
@@ -23,7 +24,7 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
     private var gpuImage: GPUImage? = null
     private val outputFilter = GPUImageOutputFilter()
 
-    private var commonFilter: GPUImageFilterGroup? = null
+    private var commonFilterGroup: GPUImageFilterGroup? = null
     private val pendingRunnableList = LinkedList<Runnable>()
 
     var windowWidth: Int = 0
@@ -59,7 +60,7 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
         val inputTextureId = gpuImage!!.textureId
         if (inputTextureId != -1) {
             var outPutTextureId = inputTextureId
-            commonFilter?.let { _commonFilter ->
+            commonFilterGroup?.let { _commonFilter ->
                 _commonFilter.onDraw(outPutTextureId)
                 outPutTextureId = _commonFilter.selfFboTextureId
             }
@@ -70,13 +71,24 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
         }
     }
 
+    override fun onDetachedFromWindow() {
+        preserveEGLContextOnPause = false
+        queueEvent {
+            gpuImage?.destroy()
+            commonFilterGroup?.destroy()
+            outputFilter.destroy()
+        }
+        requestRender()
+        super.onDetachedFromWindow()
+    }
+
     fun addFilter(filter: GPUImageFilter?) {
         if (null == filter) {
             return
         }
         queueEvent {
-            commonFilter?.destroy()
-            commonFilter = if (filter is GPUImageFilterGroup) {
+            commonFilterGroup?.destroy()
+            commonFilterGroup = if (filter is GPUImageFilterGroup) {
                 filter.ifNeedInit()
                 filter.onOutputSizeChanged(windowWidth, windowHeight)
                 filter.bindVAOData(mVertexBufferId, mFrameTextureBufferId, mFrameFlipTextureBufferId)
@@ -95,8 +107,8 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
 
     fun removeFilter() {
         queueEvent {
-            commonFilter?.destroy()
-            commonFilter = null
+            commonFilterGroup?.destroy()
+            commonFilterGroup = null
         }
         requestRender()
     }
@@ -104,9 +116,15 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
     fun setImageInput(gpuImage: GPUImage) {
         this.gpuImage = gpuImage
         pendingRunnableList.add(Runnable {
-            //create texture
             gpuImage.init()
         })
+    }
+
+    fun changeImageInput(bitmap: Bitmap) {
+        queueEvent {
+            gpuImage?.changeInputTextId(bitmap)
+        }
+        requestRender()
     }
 
 }

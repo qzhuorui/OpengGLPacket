@@ -37,7 +37,9 @@
         <activity android:name=".activity.DrawTextLaplaceActivity" />
         <activity android:name=".activity.DrawBitmapFilterActivity" />
         <activity android:name=".activity.BlendBitmapFilterActivity" />
-        <activity android:name=".activity.NewGPUImageActivity" />
+        <activity
+            android:name=".activity.NewGPUImageActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
