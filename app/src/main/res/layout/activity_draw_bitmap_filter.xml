@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red">
+    android:id="@+id/cl_container"
+    android:background="@color/white">
 
     <Button
-        android:id="@+id/btn_render"
+        android:id="@+id/btn_select_filter"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:text="Render"
-        app:layout_constraintBottom_toTopOf="@+id/v_gpuimage_view"
+        android:text="Select Filter"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_remove_filter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_remove_render"
+        android:id="@+id/btn_remove_filter"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:text="Remove Render"
-        app:layout_constraintBottom_toTopOf="@+id/v_gpuimage_view"
+        android:text="Remove Filter"
+        app:layout_constraintLeft_toRightOf="@+id/btn_select_filter"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +33,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_render" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_select_filter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
