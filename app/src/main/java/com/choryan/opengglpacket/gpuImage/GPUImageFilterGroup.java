@@ -1,7 +1,6 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
-import android.opengl.GLES30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +61,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
 
     @Override
     public void onOutputSizeChanged(int width, int height) {
-        setOutputWidth(width);
-        setOutputHeight(height);
+        super.onOutputSizeChanged(width, height);
         int size = filters.size();
         for (int i = 0; i < size; i++) {
             filters.get(i).onOutputSizeChanged(width, height);
