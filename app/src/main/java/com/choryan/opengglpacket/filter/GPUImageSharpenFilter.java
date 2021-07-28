@@ -35,7 +35,7 @@ public class GPUImageSharpenFilter extends GPUImageFilter {
     private int imageHeightFactorLocation;
 
     public GPUImageSharpenFilter() {
-        this(0.0f);
+        this(4.0f);
     }
 
     public GPUImageSharpenFilter(final float sharpness) {

@@ -31,11 +31,19 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/tv_sobel_bitmap"
+                android:id="@+id/tv_sobel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Sobel Bitmap"
+                android:text="Sobel算子"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_laplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Laplace算子"
                 android:textSize="20sp" />
 
         </LinearLayout>
