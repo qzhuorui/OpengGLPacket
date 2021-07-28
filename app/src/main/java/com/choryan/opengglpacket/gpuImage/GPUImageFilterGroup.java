@@ -1,6 +1,7 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,9 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 GPUImageFilter filter = mergedFilters.get(i);
 
                 GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, filter.getSelfFboId());
+
+                GLES30.glClearColor(0f, 0f, 0f, 1f);
+                GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
                 filter.onDraw(inputTexture);
 

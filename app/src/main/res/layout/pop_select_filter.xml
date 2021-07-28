@@ -46,6 +46,14 @@
                 android:text="Laplace算子"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/tv_sticker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Sticker"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
