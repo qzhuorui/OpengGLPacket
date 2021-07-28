@@ -93,6 +93,14 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
         requestRender()
     }
 
+    fun removeFilter() {
+        queueEvent {
+            commonFilter?.destroy()
+            commonFilter = null
+        }
+        requestRender()
+    }
+
     fun setImageInput(gpuImage: GPUImage) {
         this.gpuImage = gpuImage
         pendingRunnableList.add(Runnable {
