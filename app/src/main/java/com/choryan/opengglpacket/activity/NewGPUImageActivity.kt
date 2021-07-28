@@ -34,7 +34,7 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
             selFilterPop.show(it)
         }
         btn_remove_filter.setOnClickListener {
-            Toast.makeText(this, "remove filter", Toast.LENGTH_SHORT).show()
+            v_gpuimage_view.removeFilter()
         }
     }
 
