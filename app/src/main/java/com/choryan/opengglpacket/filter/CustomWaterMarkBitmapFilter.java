@@ -21,7 +21,7 @@ public class CustomWaterMarkBitmapFilter extends GPUImageFilter {
 
     public CustomWaterMarkBitmapFilter() {
         super(NO_FILTER_VERTEX_SHADER, AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_watermark_bitmap_filter"));
-        sourceBitmap = BitmapFactory.decodeResource(BaseApplication.instance.getResources(), R.mipmap.wnmt110_4);
+        sourceBitmap = BitmapFactory.decodeResource(BaseApplication.instance.getResources(), R.mipmap.teststicker);
         sourceBitmapW = sourceBitmap.getWidth();
         sourceBitmapH = sourceBitmap.getHeight();
     }
@@ -38,12 +38,12 @@ public class CustomWaterMarkBitmapFilter extends GPUImageFilter {
         //透明图时需要blend
         GLES30.glEnable(GLES30.GL_BLEND);
         GLES30.glBlendEquation(GLES30.GL_FUNC_ADD);
-        GLES30.glBlendFunc(GLES30.GL_SRC_ALPHA, GLES30.GL_ONE_MINUS_SRC_ALPHA);
+        GLES30.glBlendFunc(GLES30.GL_ONE, GLES30.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override
     public void onDraw(int textureId) {
-        GLES30.glViewport(0, 0, sourceBitmapW, sourceBitmapH);
+        GLES30.glViewport(0, 0, sourceBitmapW / 2, sourceBitmapH / 2);
         super.onDraw(sourceBitmapTextureId);
     }
 
