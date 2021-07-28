@@ -32,20 +32,20 @@ class DrawTextLaplaceActivity : BaseActivity(R.layout.activity_draw_laplace_text
             tv_display_text.text = et_edit_text.editableText.toString()
             tv_display_text.post {
                 lifecycleScope.launch {
-                    val renderBitmap = withContext(Dispatchers.IO) {
-                        val bitmap = Bitmap.createBitmap(tv_display_text.width, tv_display_text.height, Bitmap.Config.ARGB_8888)
-                        val canvas = Canvas(bitmap)
-                        tv_display_text.draw(canvas)
-                        bitmap
-                    }
-                    v_surface_view.setImage(renderBitmap)
+//                    val renderBitmap = withContext(Dispatchers.IO) {
+//                        val bitmap = Bitmap.createBitmap(tv_display_text.width, tv_display_text.height, Bitmap.Config.ARGB_8888)
+//                        val canvas = Canvas(bitmap)
+//                        tv_display_text.draw(canvas)
+//                        bitmap
+//                    }
+//                    v_surface_view.setImage(renderBitmap)
                 }
             }
         }
         btn_render_filter.setOnClickListener {
             val curFilter = GPUImageSharpenFilter()
             curFilter.setSharpness(4.0f)
-            v_surface_view.setFilter(curFilter)
+//            v_surface_view.setFilter(curFilter)
         }
     }
 

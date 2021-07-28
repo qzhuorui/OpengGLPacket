@@ -28,11 +28,11 @@ class BlendBitmapFilterActivity : BaseActivity(R.layout.activity_draw_bitmap_fil
         btn_render.setOnClickListener {
 //            v_gpuimage_view.setImage(sourceBitmap)
 
-            val curFilter = CustomSingleBitmapFilter(dstBitmap, false)
-            v_gpuimage_view.setFilter(curFilter)
+//            val curFilter = CustomSingleBitmapFilter(dstBitmap, false)
+//            v_gpuimage_view.setFilter(curFilter)
         }
         btn_remove_render.setOnClickListener {
-            v_gpuimage_view.removeAllFilter()
+//            v_gpuimage_view.removeAllFilter()
         }
     }
 

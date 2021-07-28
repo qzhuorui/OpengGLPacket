@@ -27,14 +27,14 @@ class DrawBitmapLaplaceActivity : BaseActivity(R.layout.activity_draw_bitmap_lap
          * 1.bitmap解码不做预乘
          * 2.OpenGL blend不乘alpha
          */
-        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
+//        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
         btn_render.setOnClickListener {
-            val curFilter = GPUImageSharpenFilter()
-            curFilter.setSharpness(4.0f)
-            v_gpuimage_view.setFilter(curFilter)
+//            val curFilter = GPUImageSharpenFilter()
+//            curFilter.setSharpness(4.0f)
+//            v_gpuimage_view.setFilter(curFilter)
         }
         btn_remove_render.setOnClickListener {
-            v_gpuimage_view.removeAllFilter()
+//            v_gpuimage_view.removeAllFilter()
         }
     }
 

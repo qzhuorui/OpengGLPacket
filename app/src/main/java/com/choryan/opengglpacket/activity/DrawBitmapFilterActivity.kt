@@ -19,13 +19,13 @@ class DrawBitmapFilterActivity : BaseActivity(R.layout.activity_draw_bitmap_filt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
+//        v_gpuimage_view.setImage(BitmapFactory.decodeResource(resources, R.mipmap.test_bitmap))
         btn_render.setOnClickListener {
-            val curFilter = GPUImageVignetteFilter()
-            v_gpuimage_view.setFilter(curFilter)
+//            val curFilter = GPUImageVignetteFilter()
+//            v_gpuimage_view.setFilter(curFilter)
         }
         btn_remove_render.setOnClickListener {
-            v_gpuimage_view.removeAllFilter()
+//            v_gpuimage_view.removeAllFilter()
         }
     }
 
