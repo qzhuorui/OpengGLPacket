@@ -33,7 +33,7 @@ public class CustomTwoInputFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        glUniformTexture2 = GLES30.glGetAttribLocation(getProgram(), "inputImageTexture2");
+        glUniformTexture2 = GLES30.glGetUniformLocation(getProgram(), "inputImageTexture2");
         glAttribTextureCoordinate2 = GLES30.glGetAttribLocation(getProgram(), "inputTextureCoordinate2");
     }
 
@@ -77,7 +77,6 @@ public class CustomTwoInputFilter extends GPUImageFilter {
 
     @Override
     public void onDraw(int textureId) {
-        GLES30.glViewport(0, 0, sourceBitmapW / 2, sourceBitmapH / 2);
         super.onDraw(textureId);
     }
 

@@ -27,7 +27,7 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
         contentView.findViewById<TextView>(R.id.tv_vignette).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_sobel).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_laplace).setOnClickListener(this)
-        contentView.findViewById<TextView>(R.id.tv_sticker).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_two_input).setOnClickListener(this)
 
     }
 
@@ -51,8 +51,8 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
             R.id.tv_laplace -> {
                 getCurSelectFilter(GPUImageSharpenFilter())
             }
-            R.id.tv_sticker -> {
-//                getCurSelectFilter(GPUImageStickerGroup())
+            R.id.tv_two_input -> {
+                getCurSelectFilter(CustomTwoInputFilter())
             }
         }
     }
