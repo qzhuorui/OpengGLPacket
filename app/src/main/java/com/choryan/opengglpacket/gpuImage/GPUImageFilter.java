@@ -156,6 +156,10 @@ public class GPUImageFilter {
         onDrawArraysEnd();
     }
 
+    public int getCurVaoId() {
+        return curVaoId;
+    }
+
     public int getSelfFboId() {
         return selfFboId;
     }
