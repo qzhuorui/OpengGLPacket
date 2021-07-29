@@ -106,7 +106,6 @@ public class GPUImageFilter {
     public void onOutputSizeChanged(final int width, final int height) {
         outputWidth = width;
         outputHeight = height;
-        GLES30.glViewport(0, 0, width, height);
         glGenFrameBuffer();
     }
 
@@ -133,6 +132,7 @@ public class GPUImageFilter {
     }
 
     public void onDraw(int textureId) {
+        GLES30.glViewport(0, 0, outputWidth, outputHeight);
         GLES30.glUseProgram(glProgId);
         runPendingOnDrawTasks();
         if (!isInitialized) {
