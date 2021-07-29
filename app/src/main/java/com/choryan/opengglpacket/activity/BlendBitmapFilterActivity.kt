@@ -6,9 +6,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
-import com.choryan.opengglpacket.filter.CustomBlendBitmapFilter
-import com.choryan.opengglpacket.filter.CustomSingleBitmapFilter
-import com.choryan.opengglpacket.filter.CustomStickerBitmapFilter
 import kotlinx.android.synthetic.main.activity_draw_bitmap_sobel.*
 
 /**

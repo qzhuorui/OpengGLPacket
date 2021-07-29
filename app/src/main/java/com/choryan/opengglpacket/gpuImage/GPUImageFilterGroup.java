@@ -1,6 +1,7 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +77,7 @@ public class GPUImageFilterGroup extends GPUImageFilter {
             for (int i = 0; i < size; i++) {
                 GPUImageFilter filter = mergedFilters.get(i);
                 if (i == size - 1) {
-//                    filter.bindVAOData(vertexBufferId, (size % 2 == 0) ? frameFlipTextureBufferId : frameTextureBufferId, frameFlipTextureBufferId);
-                    filter.bindVAOData(vertexBufferId, frameFlipTextureBufferId, frameFlipTextureBufferId);
+                    filter.bindVAOData(vertexBufferId, (size % 2 == 0) ? frameTextureBufferId : frameFlipTextureBufferId, frameFlipTextureBufferId);
                 } else {
                     filter.bindVAOData(vertexBufferId, frameTextureBufferId, frameFlipTextureBufferId);
                 }
@@ -99,6 +99,9 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 GPUImageFilter filter = mergedFilters.get(i);
 
                 GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, filter.getSelfFboId());
+
+                GLES30.glClearColor(0f, 0f, 0f, 1f);
+                GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
                 filter.onDraw(inputTexture);
 

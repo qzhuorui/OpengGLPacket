@@ -7,160 +7,160 @@
     android:padding="10dp"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_pure_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Pure Color"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_pure_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Pure Color"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
-        android:id="@+id/tv_point_line_triangle_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Point Line Triangle"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pure_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_point_line_triangle_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Point Line Triangle"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_pure_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_rectangle_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Rectangle"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_point_line_triangle_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_rectangle_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Rectangle"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_point_line_triangle_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_circular_cone_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw CircularCone"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_rectangle_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_circular_cone_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw CircularCone"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_rectangle_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_circle_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Circle"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_circular_cone_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_circle_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Circle"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_circular_cone_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_text_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Text"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_circle_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_text_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Text"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_circle_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_bitmap_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Bitmap"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_bitmap_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Bitmap"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_bitmap_sobel_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Bitmap Sobel"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_bitmap_sobel_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Bitmap Sobel"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_text_sobel_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Text Sobel"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_sobel_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_text_sobel_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Text Sobel"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_sobel_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_bitmap_laplace_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Bitmap Laplace"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_sobel_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_bitmap_laplace_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Bitmap Laplace"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_sobel_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_text_laplace_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Text Laplace"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_laplace_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_text_laplace_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Text Laplace"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_laplace_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_draw_bitmap_filter_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Draw Bitmap With Filter"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_laplace_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_draw_bitmap_filter_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Draw Bitmap With Filter"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_text_laplace_activity" />-->
 
-    <TextView
-        android:id="@+id/tv_blend_bitmap_filter_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_home_tv"
-        android:padding="5dp"
-        android:text="Blend Bitmap With Filter"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_filter_activity" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_blend_bitmap_filter_activity"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/bg_home_tv"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Blend Bitmap With Filter"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_draw_bitmap_filter_activity" />-->
 
     <TextView
         android:id="@+id/tv_new_gpuimage_activity"
@@ -171,7 +171,6 @@
         android:padding="5dp"
         android:text="New GPUImage"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_blend_bitmap_filter_activity" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

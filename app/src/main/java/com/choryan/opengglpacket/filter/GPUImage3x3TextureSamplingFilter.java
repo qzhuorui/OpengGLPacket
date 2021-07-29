@@ -71,7 +71,7 @@ public class GPUImage3x3TextureSamplingFilter extends GPUImageFilter {
     private boolean hasOverriddenImageSizeFactor = false;
     private float texelWidth;
     private float texelHeight;
-    private float lineSize = 1.0f;
+    private float lineSize = 4.0f;
 
     public GPUImage3x3TextureSamplingFilter() {
         this(NO_FILTER_VERTEX_SHADER);

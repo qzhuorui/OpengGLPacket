@@ -5,8 +5,7 @@ import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.choryan.opengglpacket.R
-import com.choryan.opengglpacket.filter.GPUImageGrayscaleFilter
-import com.choryan.opengglpacket.filter.GPUImageVignetteFilter
+import com.choryan.opengglpacket.filter.*
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter
 
 /**
@@ -26,6 +25,10 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
         contentView.setOnTouchListener(this)
         contentView.findViewById<TextView>(R.id.tv_gray).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_vignette).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_sobel).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_laplace).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_sticker).setOnClickListener(this)
+
     }
 
     fun show(parent: View?) {
@@ -41,6 +44,15 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
             }
             R.id.tv_vignette -> {
                 getCurSelectFilter(GPUImageVignetteFilter())
+            }
+            R.id.tv_sobel -> {
+                getCurSelectFilter(GPUImageSobelEdgeDetectionFilter())
+            }
+            R.id.tv_laplace -> {
+                getCurSelectFilter(GPUImageSharpenFilter())
+            }
+            R.id.tv_sticker -> {
+//                getCurSelectFilter(GPUImageStickerGroup())
             }
         }
     }

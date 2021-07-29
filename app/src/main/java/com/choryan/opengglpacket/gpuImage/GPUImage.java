@@ -1,6 +1,8 @@
 package com.choryan.opengglpacket.gpuImage;
 
 import android.graphics.Bitmap;
+import android.opengl.GLES30;
+import android.opengl.GLUtils;
 
 import com.choryan.opengglpacket.util.GlesUtil;
 
@@ -26,8 +28,17 @@ public class GPUImage {
     public void init() {
         if (null != this.bitmap) {
             textureId = GlesUtil.loadBitmapTexture(this.bitmap);
-        }else {
+        } else {
             throw new RuntimeException("GPUImage init bitmap is null");
+        }
+    }
+
+    public void changeInputTextId(Bitmap bitmap) {
+        if (!bitmap.isRecycled()) {
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureId);
+            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);//bitmap传入已绑定texId中
+            bitmap.recycle();
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         }
     }
 

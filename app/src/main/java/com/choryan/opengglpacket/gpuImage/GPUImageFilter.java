@@ -133,9 +133,6 @@ public class GPUImageFilter {
     }
 
     public void onDraw(int textureId) {
-        GLES30.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
-
         GLES30.glUseProgram(glProgId);
         runPendingOnDrawTasks();
         if (!isInitialized) {
@@ -157,6 +154,10 @@ public class GPUImageFilter {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
         GLES30.glBindVertexArray(0);
         onDrawArraysEnd();
+    }
+
+    public int getCurVaoId() {
+        return curVaoId;
     }
 
     public int getSelfFboId() {
