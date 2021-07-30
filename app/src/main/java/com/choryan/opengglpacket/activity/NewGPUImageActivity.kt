@@ -7,9 +7,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.os.Bundle
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
+import com.choryan.opengglpacket.filter.GPUImageGaussianBlurFilter
 import com.choryan.opengglpacket.gpuImage.GPUImage
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter
 import com.choryan.opengglpacket.view.SelectFilterPop
@@ -25,6 +27,8 @@ import kotlinx.coroutines.withContext
  */
 class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), SelectFilterPop.SelectFilterCallBack,
     SeekBar.OnSeekBarChangeListener {
+
+    private var curFilter: GPUImageFilter? = null
 
     private val selFilterPop by lazy {
         val pop = SelectFilterPop(this)
@@ -67,6 +71,7 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
     }
 
     override fun provideSelFilter(gpuImageFilter: GPUImageFilter) {
+        curFilter = gpuImageFilter
         v_gpuimage_view.addFilter(gpuImageFilter)
     }
 
@@ -81,7 +86,15 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
         }
     }
 
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        curFilter?.let {
+            if (it is GPUImageGaussianBlurFilter) {
+                Toast.makeText(this, "curProgress: $progress", Toast.LENGTH_SHORT).show()
+                it.setBlurSize(progress.toFloat())
+                v_gpuimage_view.forceRequestRender()
+            }
+        }
+    }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 

@@ -144,4 +144,8 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
         requestRender()
     }
 
+    fun forceRequestRender() {
+        requestRender()
+    }
+
 }
