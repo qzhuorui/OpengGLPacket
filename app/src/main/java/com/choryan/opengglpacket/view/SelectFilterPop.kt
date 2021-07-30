@@ -28,6 +28,7 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
         contentView.findViewById<TextView>(R.id.tv_sobel).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_laplace).setOnClickListener(this)
         contentView.findViewById<TextView>(R.id.tv_two_input).setOnClickListener(this)
+        contentView.findViewById<TextView>(R.id.tv_gaussian_blur).setOnClickListener(this)
 
     }
 
@@ -53,6 +54,9 @@ class SelectFilterPop(private val context: Context) : PopupWindow(context), View
             }
             R.id.tv_two_input -> {
                 getCurSelectFilter(CustomTwoInputFilter())
+            }
+            R.id.tv_gaussian_blur -> {
+                getCurSelectFilter(GPUImageGaussianBlurFilter())
             }
         }
     }

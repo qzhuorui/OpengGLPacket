@@ -54,6 +54,14 @@
                 android:text="Two Input"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/tv_gaussian_blur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Gaussian Blur"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
