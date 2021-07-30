@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.choryan.opengglpacket.R
 import com.choryan.opengglpacket.base.BaseActivity
+import com.choryan.opengglpacket.filter.CustomGaussianBlendFilter
 import com.choryan.opengglpacket.filter.GPUImageGaussianBlurFilter
 import com.choryan.opengglpacket.gpuImage.GPUImage
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter
@@ -72,6 +73,11 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
 
     override fun provideSelFilter(gpuImageFilter: GPUImageFilter) {
         curFilter = gpuImageFilter
+        curFilter?.let {
+            if (it is CustomGaussianBlendFilter) {
+                it.setInputTexture(v_gpuimage_view.getCurImageInput())
+            }
+        }
         v_gpuimage_view.addFilter(gpuImageFilter)
     }
 
@@ -88,7 +94,7 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         curFilter?.let {
-            if (it is GPUImageGaussianBlurFilter) {
+            if (it is CustomGaussianBlendFilter) {
                 Toast.makeText(this, "curProgress: $progress", Toast.LENGTH_SHORT).show()
                 it.setBlurSize(progress.toFloat())
                 v_gpuimage_view.forceRequestRender()

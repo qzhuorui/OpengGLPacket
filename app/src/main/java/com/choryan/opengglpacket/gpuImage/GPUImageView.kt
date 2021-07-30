@@ -130,6 +130,10 @@ class GPUImageView @JvmOverloads constructor(context: Context, attributes: Attri
         requestRender()
     }
 
+    fun getCurImageInput(): Int {
+        return gpuImage?.textureId ?: -1
+    }
+
     fun setImageInput(gpuImage: GPUImage) {
         this.gpuImage = gpuImage
         pendingRunnableList.add(Runnable {

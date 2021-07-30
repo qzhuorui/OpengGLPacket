@@ -92,4 +92,8 @@ public class CustomTwoInputFilter extends GPUImageFilter {
         super.onDestroy();
         sourceBitmap.recycle();
     }
+
+    public void setInputTexture(int textureIdSecond) {
+        this.sourceBitmapTextureId = textureIdSecond;
+    }
 }
