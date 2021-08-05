@@ -94,7 +94,7 @@ class NewGPUImageActivity : BaseActivity(R.layout.activity_draw_bitmap_filter), 
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         curFilter?.let {
-            if (it is CustomGaussianBlendFilter) {
+            if (it is GPUImageGaussianBlurFilter) {
                 Toast.makeText(this, "curProgress: $progress", Toast.LENGTH_SHORT).show()
                 it.setBlurSize(progress.toFloat())
                 v_gpuimage_view.forceRequestRender()
