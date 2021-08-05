@@ -9,6 +9,7 @@ import com.choryan.opengglpacket.base.BaseApplication;
 import com.choryan.opengglpacket.gpuImage.GPUImageFilter;
 import com.choryan.opengglpacket.util.AssetsUtils;
 import com.choryan.opengglpacket.util.GlesUtil;
+import com.choryan.opengglpacket.util.LogUtil;
 
 /**
  * @author: ChoRyan Quan
@@ -18,6 +19,7 @@ public class CustomTwoInputFilter extends GPUImageFilter {
 
     private Bitmap sourceBitmap;
     private int sourceBitmapTextureId, sourceBitmapW, sourceBitmapH;
+    private int inputTextureId = -1;
 
     private int glUniformTexture2;
     private int glAttribTextureCoordinate2;
@@ -25,7 +27,7 @@ public class CustomTwoInputFilter extends GPUImageFilter {
     public CustomTwoInputFilter() {
         super(AssetsUtils.getVertexStrFromAssert(BaseApplication.instance, "vertex_two_input_texture"),
                 AssetsUtils.getFragmentStrFromAssert(BaseApplication.instance, "fragment_two_input_texture"));
-        sourceBitmap = BitmapFactory.decodeResource(BaseApplication.instance.getResources(), R.mipmap.teststicker);
+        sourceBitmap = BitmapFactory.decodeResource(BaseApplication.instance.getResources(), R.mipmap.wnmt110_4);
         sourceBitmapW = sourceBitmap.getWidth();
         sourceBitmapH = sourceBitmap.getHeight();
     }
@@ -40,7 +42,11 @@ public class CustomTwoInputFilter extends GPUImageFilter {
     @Override
     public void onInitialized() {
         super.onInitialized();
-        this.sourceBitmapTextureId = GlesUtil.loadBitmapTexture(sourceBitmap);
+        if (inputTextureId != -1) {
+            this.sourceBitmapTextureId = inputTextureId;
+        } else {
+            this.sourceBitmapTextureId = GlesUtil.loadBitmapTexture(sourceBitmap);
+        }
     }
 
     @Override
@@ -94,6 +100,6 @@ public class CustomTwoInputFilter extends GPUImageFilter {
     }
 
     public void setInputTexture(int textureIdSecond) {
-        this.sourceBitmapTextureId = textureIdSecond;
+        this.inputTextureId = textureIdSecond;
     }
 }
