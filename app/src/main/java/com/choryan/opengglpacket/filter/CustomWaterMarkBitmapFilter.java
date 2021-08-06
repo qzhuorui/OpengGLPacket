@@ -13,6 +13,8 @@ import com.choryan.opengglpacket.util.GlesUtil;
 /**
  * @author: ChoRyan Quan
  * @date: 2021/7/26
+ * @description: 水印无法直接使用FilterGroup链，因为需要拿到上一层的数据；倒是可以使用双输入源，但是不好控制。
+ * 所以引入单独的水印Filter，并且再引入OutPutFilter作为最终的输出控制。
  */
 public class CustomWaterMarkBitmapFilter extends GPUImageFilter {
 

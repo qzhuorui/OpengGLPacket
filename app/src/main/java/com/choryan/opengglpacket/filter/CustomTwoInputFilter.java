@@ -14,6 +14,7 @@ import com.choryan.opengglpacket.util.LogUtil;
 /**
  * @author: ChoRyan Quan
  * @date: 2021/7/28
+ * @description: 双输入滤镜，shader中可以指定混合算法
  */
 public class CustomTwoInputFilter extends GPUImageFilter {
 

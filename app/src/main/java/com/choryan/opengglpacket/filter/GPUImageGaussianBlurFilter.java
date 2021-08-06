@@ -7,6 +7,7 @@ import com.choryan.opengglpacket.util.AssetsUtils;
 /**
  * @author: ChoRyan Quan
  * @date: 2021/7/30
+ * @description: 高斯模糊，横向和纵向
  */
 public class GPUImageGaussianBlurFilter extends GPUImageTwoPassTextureSamplingFilter {
 

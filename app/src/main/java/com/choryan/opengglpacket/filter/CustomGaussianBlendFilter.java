@@ -5,6 +5,7 @@ import com.choryan.opengglpacket.gpuImage.GPUImageFilterGroup;
 /**
  * @author: ChoRyan Quan
  * @date: 2021/7/5
+ * @description: 高斯模糊和原图叠加，产生光晕效果
  */
 public class CustomGaussianBlendFilter extends GPUImageFilterGroup {
 

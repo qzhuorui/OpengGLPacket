@@ -15,6 +15,7 @@ void main() {
     lowp vec4 color = texture2D(inputImageTexture, textureCoordinate);
     lowp float d = distance(textureCoordinate, vignetteCenter);
     lowp float percent = smoothstep(vignetteStart, vignetteEnd, d);
+    //mix(x,y,a) = x * (1-a) + y * a
     gl_FragColor = vec4(mix(color.rgb, vignetteColor, percent), color.a);
 
 
