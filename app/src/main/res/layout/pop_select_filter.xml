@@ -70,6 +70,70 @@
                 android:text="Gaussian Blend"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/tv_contrast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Contrast"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_invert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Invert"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_pixelation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Pixelation"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_hue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Hue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_gamma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Gamma"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Brightness"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_sepia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Sepia"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_grayscale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Grayscale"
+                android:textSize="20sp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
